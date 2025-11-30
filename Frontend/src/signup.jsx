@@ -130,6 +130,8 @@ export default function SignupPage() {
               </span>
             </p>
           </div>
+          
+          {/* hello */}
 
           {/* Right Side - Image */}
           <div className="hidden lg:block lg:w-1/2">
