@@ -1,0 +1,126 @@
+/* Full-screen container, center content */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+  width: 100vw;      /* Full viewport width */
+  background-color: #f9fafb; /* Light background */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative dots at top-left */
+.dots {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  gap: 8px;
+}
+.dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.dot1 { background-color: #d1d5db; } /* gray-300 */
+.dot2 { background-color: #d1d5db; }
+.dot3 { background-color: #9ca3af; } /* gray-400 */
+.dot4 { background-color: #6b7280; } /* gray-500 */
+
+/* Login box styling */
+.login-box {
+  background-color: #ffffff;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  border-radius: 16px;
+  padding: 40px;
+  width: 400px;
+  max-width: 90%; /* Responsive on small screens */
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+/* Title and subtitle */
+.login-box h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.login-box p {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+/* Labels */
+.login-box label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+/* Input container with icon */
+.input-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+}
+.input-container span {
+  margin-right: 8px;
+  color: #9ca3af;
+}
+.input-container input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 8px 0;
+  font-size: 16px;
+}
+
+/* Forgot password link */
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+.forgot-password button {
+  border: none;
+  background: none;
+  color: #2563eb;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+/* Sign In button */
+.login-box button[type="submit"] {
+  width: 100%;
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+.login-box button[type="submit"]:hover {
+  background-color: #1d4ed8;
+}
+
+/* Sign Up text */
+.signup-text {
+  text-align: center;
+  margin-top: 16px;
+  color: #6b7280;
+}
+.signup-text span {
+  color: #2563eb;
+  cursor: pointer;
+  margin-left: 4px;
+  text-decoration: underline;
+}
