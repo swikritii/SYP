@@ -37,7 +37,7 @@ export default function LoginPage() {
               Sign In to FutsalFlow
             </h1>
             <p className="text-gray-600 text-sm mb-8">
-              Welcome back! Please enter your details to sign in.
+              Welcome back User! Please enter your details to sign in.
             </p>
 
             <div className="space-y-5">
