@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Star, ArrowRight } from 'lucide-react';
+import { MapPin, Star, ArrowRight, Facebook, Instagram, Twitter, Linkedin, Globe } from 'lucide-react';
 
 function Homepage() {
   const navigate = useNavigate();
@@ -53,8 +53,8 @@ function Homepage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-indigo-900 rounded-lg flex items-center justify-center text-white font-bold">
-                FF
+              <div className="w-10 h-10 bg-indigo-900 rounded-lg flex items-center justify-center text-white">
+                <Globe className="w-6 h-6" />
               </div>
               <span className="text-xl font-bold text-gray-900">FutsalFlow</span>
             </div>
@@ -180,21 +180,88 @@ function Homepage() {
       </section>
 
       {/* Footer */}
-      <footer id="about" className="bg-gray-900 text-white py-12">
+      <footer id="about" className="bg-white border-t border-gray-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-indigo-900 font-bold">
-                FF
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            {/* Left Column - Logo and Social */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-10 h-10 bg-indigo-900 rounded-lg flex items-center justify-center text-white">
+                  <Globe className="w-6 h-6" />
+                </div>
+                <span className="text-xl font-bold text-gray-900">FutsalFlow</span>
               </div>
-              <span className="text-xl font-bold">FutsalFlow</span>
+              <p className="text-gray-600 text-sm mb-4">
+                Your ultimate platform for booking futsal courts and staying active.
+              </p>
+              <div className="flex gap-3">
+                <a href="#" className="text-gray-600 hover:text-indigo-900 transition">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-600 hover:text-indigo-900 transition">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-600 hover:text-indigo-900 transition">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-600 hover:text-indigo-900 transition">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              </div>
             </div>
-            <p className="text-gray-400 mb-6 max-w-md mx-auto">
-              Your ultimate platform for booking futsal courts and staying active.
-            </p>
-            <div className="border-t border-gray-800 pt-8 text-sm text-gray-400">
-              © 2025 FutsalFlow. All rights reserved.
+
+            {/* Company Column */}
+            <div>
+              <h3 className="font-bold text-gray-900 mb-4">Company</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">About Us</a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">Careers</a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">Press</a>
+                </li>
+              </ul>
             </div>
+
+            {/* Support Column */}
+            <div>
+              <h3 className="font-bold text-gray-900 mb-4">Support</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">Help Center</a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">Contact Us</a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">Privacy Policy</a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">Terms of Service</a>
+                </li>
+              </ul>
+            </div>
+
+            {/* For Owners Column */}
+            <div>
+              <h3 className="font-bold text-gray-900 mb-4">For Owners</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">List Your Court</a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-indigo-900 transition">Owner Dashboard</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="border-t border-gray-200 pt-8 text-center text-sm text-gray-600">
+            © 2025 FutsalFlow. All rights reserved.
           </div>
         </div>
       </footer>
