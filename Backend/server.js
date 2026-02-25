@@ -68,13 +68,14 @@ app.post('/signup', async (req, res) => {
 
         // Hash password and create user
         const hashedPassword = await bcrypt.hash(password, 10);
+        const userRole = req.body.role || 'player';
         const [result] = await pool.query(
-            'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-            [name, email, hashedPassword]
+            'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
+            [name, email, hashedPassword, userRole]
         );
 
-        const user = { id: result.insertId, name, email };
-        const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '2h' });
+        const user = { id: result.insertId, name, email, role: userRole };
+        const token = jwt.sign({ id: user.id, email: user.email, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
 
         res.status(201).json({
             message: 'User created successfully',
@@ -108,12 +109,13 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '2h' });
+        const token = jwt.sign({ id: user.id, email: user.email, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
 
         res.json({
             id: user.id,
             name: user.name,
             email: user.email,
+            role: user.role,
             token
         });
     } catch (err) {
@@ -124,7 +126,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/me', authenticateToken, async (req, res) => {
     try {
-        const [users] = await pool.query('SELECT id, name, email FROM users WHERE id = ?', [req.user.id]);
+        const [users] = await pool.query('SELECT id, name, email, role FROM users WHERE id = ?', [req.user.id]);
 
         if (users.length === 0) {
             return res.status(404).json({ message: 'User not found' });

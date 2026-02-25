@@ -22,12 +22,24 @@ export default function Login() {
     }
 
     // Demo credentials
-    if (formData.email.trim() === 'demo@futsalflow.com' && formData.password === 'futsal123') {
+    const demoCredentials = {
+      'player@demo.com': { role: 'player', path: '/dashboard' },
+      'owner@demo.com': { role: 'owner', path: '/owner/dashboard' },
+      'admin@demo.com': { role: 'admin', path: '/admin' }
+    };
+
+    if (demoCredentials[formData.email.trim()] && formData.password === 'password123') {
+      const demo = demoCredentials[formData.email.trim()];
       setLoading(true);
       setTimeout(() => {
         localStorage.setItem('token', 'demo-token');
-        localStorage.setItem('user', JSON.stringify({ id: 1, name: 'Demo User', email: 'demo@futsalflow.com' }));
-        navigate('/');
+        localStorage.setItem('user', JSON.stringify({ 
+          id: 99, 
+          name: `Demo ${demo.role.charAt(0).toUpperCase() + demo.role.slice(1)}`, 
+          email: formData.email.trim(),
+          role: demo.role 
+        }));
+        navigate(demo.path);
       }, 500);
       return;
     }
@@ -43,9 +55,18 @@ export default function Login() {
       if (!res.ok) { setError(json.message || 'Invalid credentials'); setLoading(false); return; }
       if (json.token) {
         localStorage.setItem('token', json.token);
-        localStorage.setItem('user', JSON.stringify({ id: json.id, name: json.name, email: json.email }));
+        localStorage.setItem('user', JSON.stringify({ 
+          id: json.id, 
+          name: json.name, 
+          email: json.email,
+          role: json.role 
+        }));
+        
+        // Redirect based on role
+        if (json.role === 'admin') navigate('/admin');
+        else if (json.role === 'owner') navigate('/owner/dashboard');
+        else navigate('/dashboard');
       }
-      navigate('/');
     } catch (err) {
       setError('Invalid credentials');
       setLoading(false);

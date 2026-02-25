@@ -114,7 +114,13 @@ export default function Navbar() {
                     </div>
 
                     <button
-                      onClick={() => { navigate('/dashboard'); setDropdownOpen(false); }}
+                      onClick={() => { 
+                        const role = user?.role || 'player';
+                        if (role === 'admin') navigate('/admin');
+                        else if (role === 'owner') navigate('/owner/dashboard');
+                        else navigate('/dashboard');
+                        setDropdownOpen(false); 
+                      }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 bg-transparent border-none cursor-pointer transition"
                     >
                       <LayoutDashboard className="w-4 h-4" />

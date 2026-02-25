@@ -1,75 +1,257 @@
-import React from 'react';
-import { Dumbbell, Timer, Flame, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import WorkoutFilter from '../../components/workout/WorkoutFilter';
+import WorkoutCard from '../../components/workout/WorkoutCard';
+import WorkoutModal from '../../components/workout/WorkoutModal';
+import { Play } from 'lucide-react';
 
-const workouts = [
+const workoutData = [
   {
-    title: 'Agility Drills',
-    description: 'Improve your footwork and reaction time with ladder and cone drills.',
-    icon: Timer,
-    duration: '20 min',
-    difficulty: 'Intermediate',
-    color: 'bg-blue-50 text-blue-700',
-  },
-  {
-    title: 'Strength Training',
-    description: 'Build core and leg strength essential for futsal performance.',
-    icon: Dumbbell,
-    duration: '30 min',
-    difficulty: 'Advanced',
-    color: 'bg-orange-50 text-orange-700',
-  },
-  {
-    title: 'Cardio Endurance',
-    description: 'High-intensity interval training designed for match fitness.',
-    icon: Flame,
-    duration: '25 min',
+    id: 1,
+    title: 'Dynamic Leg Swings',
+    category: 'Warm-Up',
+    duration: '5 min',
     difficulty: 'Beginner',
-    color: 'bg-red-50 text-red-700',
+    description: 'Increase hip mobility and warm up the lower body with controlled leg swings.',
+    thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac006c?auto=format&fit=crop&q=80&w=800',
+    videoUrl: 'https://www.youtube.com/watch?v=X00_gVwX8E4',
+    shortId: 'X00_gVwX8E4',
+    tips: [
+      'Keep your core engaged throughout.',
+      'Maintain a slight bend in the standing leg.',
+      'Control the movement—don\'t just use momentum.',
+      'Perform 15 swings per leg.'
+    ]
   },
+  {
+    id: 2,
+    title: 'Shuttle Runs (L-Drills)',
+    category: 'Agility',
+    duration: '10 min',
+    difficulty: 'Intermediate',
+    description: 'Enhance your rapid change of direction and explosive acceleration.',
+    thumbnail: 'https://images.unsplash.com/photo-1517438476312-10d79c077509?auto=format&fit=crop&q=80&w=800',
+    videoUrl: 'https://www.youtube.com/watch?v=7M7v6vPzBGE',
+    shortId: '7M7v6vPzBGE',
+    tips: [
+      'Stay low when approaching the turns.',
+      'Use small, quick steps for better balance.',
+      'Explode out of every turn.',
+      'Keep your eyes up, not at the cones.'
+    ]
+  },
+  {
+    id: 3,
+    title: '60m Speed Bursts',
+    category: 'Speed',
+    duration: '15 min',
+    difficulty: 'Intermediate',
+    description: 'Develop peak sprinting speed and explosive takeoff from a standstill.',
+    thumbnail: 'https://images.unsplash.com/photo-1530541930197-ff16ac911b32?auto=format&fit=crop&q=80&w=800',
+    videoUrl: 'https://www.youtube.com/watch?v=4L_V3Xq_5G0',
+    shortId: '4L_V3Xq_5G0',
+    tips: [
+      'Drive your knees high during the sprint.',
+      'Pump your arms vigorously.',
+      'Rest for 60-90 seconds between sets.',
+      'Focus on a powerful initial drive.'
+    ]
+  },
+  {
+    id: 4,
+    title: 'Weighted Bulgarian Splits',
+    category: 'Strength',
+    duration: '20 min',
+    difficulty: 'Advanced',
+    description: 'Build unilateral leg strength and stability crucial for shooting power.',
+    thumbnail: 'https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?auto=format&fit=crop&q=80&w=800',
+    videoUrl: 'https://www.youtube.com/watch?v=7M7v6vPzBGE',
+    shortId: '7M7v6vPzBGE',
+    tips: [
+      'Maintain an upright torso.',
+      'Your knee should track towards your second toe.',
+      'Lower yourself slowly and controlled.',
+      'Don\'t let your front knee pass your toes.'
+    ]
+  },
+  {
+    id: 5,
+    title: 'Figure-8 Dribbling',
+    category: 'Ball Control',
+    duration: '12 min',
+    difficulty: 'Beginner',
+    description: 'Master tight ball control and close-quarter dribbling around obstacles.',
+    thumbnail: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&q=80&w=800',
+    videoUrl: 'https://www.youtube.com/watch?v=VIdmYv0Yh7c',
+    shortId: 'VIdmYv0Yh7c',
+    tips: [
+      'Use both the inside and outside of your feet.',
+      'Keep the ball close to your foot at all times.',
+      'Take many small touches rather than few big ones.',
+      'Try to keep your head up to see the field.'
+    ]
+  },
+  {
+    id: 6,
+    title: 'Static Quad Stretch',
+    category: 'Cool Down',
+    duration: '5 min',
+    difficulty: 'Beginner',
+    description: 'Properly cool down and stretch your quads after high-intensity play.',
+    thumbnail: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800',
+    videoUrl: 'https://www.youtube.com/watch?v=eYEnsh466e0',
+    shortId: 'eYEnsh466e0',
+    tips: [
+      'Find a wall for balance if needed.',
+      'Keep your knees close together.',
+      'Push your hips slightly forward for a deeper stretch.',
+      'Hold each side for 30 seconds.'
+    ]
+  }
 ];
 
 export default function WorkoutHub() {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [selectedWorkout, setSelectedWorkout] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const filteredWorkouts = activeFilter === 'All' 
+    ? workoutData 
+    : workoutData.filter(workout => workout.category === activeFilter);
+
+  const handleQuickTips = (workout) => {
+    setSelectedWorkout(workout);
+    setIsModalOpen(true);
+  };
+
   return (
-    <div className="bg-white">
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-[#f8fafc] min-h-screen font-sans">
+      {/* Hero Section */}
+      <section className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} pt-12 pb-16 px-4`}>
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Workout Hub</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Enhance your futsal game with curated workout routines designed by professionals.
+            <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight">
+              Pre-Match <span className="text-blue-600">Warm-Up</span>
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Prepare your body for peak performance and minimize injury risk. Access our curated collection of pro-level football drills and routines.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {workouts.map((workout) => {
-              const Icon = workout.icon;
-              return (
-                <div
-                  key={workout.title}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6 group cursor-pointer"
-                >
-                  <div className={`inline-flex p-3 rounded-xl mb-4 ${workout.color}`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{workout.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{workout.description}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex gap-3 text-xs">
-                      <span className="bg-gray-100 px-2 py-1 rounded-full text-gray-600">
-                        {workout.duration}
-                      </span>
-                      <span className="bg-gray-100 px-2 py-1 rounded-full text-gray-600">
-                        {workout.difficulty}
-                      </span>
+          <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 group">
+            <div className="aspect-video relative">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/X00_gVwX8E4"
+                title="Featured Workout"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <div className="p-8 md:p-10">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">Dynamic Futsal Warm-Up: Full Body Activation</h2>
+                        <p className="text-gray-500 max-w-xl">A comprehensive routine to activate all major muscle groups and boost cardiovascular readiness before your match.</p>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-indigo-900 group-hover:translate-x-1 transition-all" />
-                  </div>
+                    <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 group-hover:scale-105 active:scale-95">
+                        <Play fill="white" size={20} />
+                        Get Started
+                    </button>
                 </div>
-              );
-            })}
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 pb-24">
+        {/* Filter Section */}
+        <div className={`transition-all duration-1000 delay-300 transform ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+          <WorkoutFilter activeFilter={activeFilter} setFilter={setActiveFilter} />
+        </div>
+
+        {/* Dynamic Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+          {filteredWorkouts.map((workout, index) => (
+            <div 
+              key={workout.id} 
+              className={`transition-all duration-700 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              <WorkoutCard 
+                workout={workout} 
+                onQuickTips={handleQuickTips} 
+              />
+            </div>
+          ))}
+        </div>
+
+        {filteredWorkouts.length === 0 && (
+          <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
+            <p className="text-gray-400 font-medium">No drills found in this category. Check back soon!</p>
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-100 py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div className="col-span-1 md:col-span-2">
+               <div className="flex items-center gap-2 mb-6">
+                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-black text-xl">F</span>
+                  </div>
+                  <span className="text-2xl font-black text-gray-900 tracking-tight">FutsalFlow</span>
+               </div>
+               <p className="text-gray-500 max-w-md leading-relaxed">
+                 Elite booking and performance hub for the modern futsal community. Manage bookings, discover courts, and level up your game with our professional tools.
+               </p>
+            </div>
+            
+            <div>
+              <h4 className="text-gray-900 font-bold mb-6">Explore</h4>
+              <ul className="space-y-4">
+                <li><a href="/" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Home</a></li>
+                <li><a href="/browse-courts" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Browse Courts</a></li>
+                <li><a href="/workout-hub" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Workout Hub</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-gray-900 font-bold mb-6">Dashboard</h4>
+              <ul className="space-y-4">
+                <li><a href="/owner/dashboard" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Owner Portal</a></li>
+                <li><a href="/admin" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Admin Panel</a></li>
+                <li><a href="/login" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Sign In</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-gray-400 text-sm font-medium">© 2025 FutsalFlow. All rights reserved.</p>
+            <div className="flex gap-8">
+              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">Privacy Policy</a>
+              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modal */}
+      {selectedWorkout && (
+        <WorkoutModal 
+          workout={selectedWorkout} 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+      )}
     </div>
   );
 }
