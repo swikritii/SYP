@@ -94,12 +94,12 @@ export default function BookingForm({ court, onSubmit }) {
         {/* Price Summary */}
         <div className="bg-gray-50 rounded-lg p-4">
           <div className="flex justify-between text-sm text-gray-600 mb-1">
-            <span>${court?.price || 0} × {duration} hour{duration > 1 ? 's' : ''}</span>
-            <span>${(court?.price || 0) * duration}</span>
+            <span>Rs. {court?.price || 0} × {duration} hour{duration > 1 ? 's' : ''}</span>
+            <span>Rs. {(court?.price || 0) * duration}</span>
           </div>
           <div className="flex justify-between font-bold text-gray-900 text-lg border-t border-gray-200 pt-2 mt-2">
             <span>Total</span>
-            <span className="text-indigo-900">${(court?.price || 0) * duration}</span>
+            <span className="text-indigo-900">Rs. {(court?.price || 0) * duration}</span>
           </div>
         </div>
 

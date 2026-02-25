@@ -11,7 +11,7 @@ export default function OwnerDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <StatsCard title="Total Bookings" value="142" icon={Calendar} color="indigo" trend={12} />
         <StatsCard title="Active Courts" value="3" icon={MapPin} color="green" />
-        <StatsCard title="Revenue" value="$4,250" icon={DollarSign} color="orange" trend={18} />
+        <StatsCard title="Revenue" value="Rs. 4,250" icon={DollarSign} color="orange" trend={18} />
       </div>
 
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">

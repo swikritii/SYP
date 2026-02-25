@@ -42,7 +42,7 @@ export default function BookingSummary({ booking }) {
 
       <div className="mt-4 flex justify-between items-center border-t border-gray-200 pt-4">
         <span className="text-gray-600">Total Paid</span>
-        <span className="text-xl font-bold text-indigo-900">${booking.totalPrice}</span>
+        <span className="text-xl font-bold text-indigo-900">Rs. {booking.totalPrice}</span>
       </div>
     </div>
   );

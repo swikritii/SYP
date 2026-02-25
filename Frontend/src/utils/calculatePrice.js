@@ -23,9 +23,11 @@ export function calculatePrice(pricePerHour, durationHours = 1, discount = 0) {
  * @param {string} currency
  * @returns {string}
  */
-export function formatPrice(price, currency = 'USD') {
-  return new Intl.NumberFormat('en-US', {
+export function formatPrice(price, currency = 'NPR') {
+  return new Intl.NumberFormat('en-NP', {
     style: 'currency',
     currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(price);
 }

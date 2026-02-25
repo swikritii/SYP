@@ -32,7 +32,7 @@ export default function CourtCard({ court }) {
             <span className="font-semibold text-gray-900">{court.rating || '4.5'}</span>
           </div>
           <div className="text-gray-900 font-bold text-lg">
-            ${court.price}
+            Rs. {court.price}
             <span className="text-sm text-gray-600 font-normal">/hr</span>
           </div>
         </div>

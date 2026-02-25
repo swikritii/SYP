@@ -109,7 +109,7 @@ export default function CourtDetails() {
   };
 
   const handleBooking = (bookingData) => {
-    alert(`Booking submitted!\n\nCourt: ${court.name}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\nDuration: ${bookingData.duration}h\nTotal: $${bookingData.totalPrice}`);
+    alert(`Booking submitted!\n\nCourt: ${court.name}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\nDuration: ${bookingData.duration}h\nTotal: Rs. ${bookingData.totalPrice}`);
   };
 
   const tabs = [
@@ -213,7 +213,7 @@ export default function CourtDetails() {
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-indigo-900">
-                    ${court.price}
+                    Rs. {court.price}
                     <span className="text-base text-gray-500 font-normal">/hr</span>
                   </div>
                 </div>

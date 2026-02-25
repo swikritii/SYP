@@ -48,7 +48,7 @@ export default function CourtDetailsCard({ court }) {
             <span className="text-sm text-gray-600">{court.hours || '09:00 AM - 11:00 PM'}</span>
           </div>
           <div className="text-indigo-900 font-bold text-xl">
-            ${court.price}
+            Rs. {court.price}
             <span className="text-sm text-gray-600 font-normal">/hr</span>
           </div>
         </div>

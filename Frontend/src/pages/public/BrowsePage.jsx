@@ -136,9 +136,9 @@ export default function BrowsePage() {
               className="w-full accent-indigo-900"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>$50</span>
-              <span className="font-semibold text-indigo-900">${priceRange}</span>
-              <span>$150</span>
+              <span>Rs. 50</span>
+              <span className="font-semibold text-indigo-900">Rs. {priceRange}</span>
+              <span>Rs. 150</span>
             </div>
           </div>
 
