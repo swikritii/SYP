@@ -1,5 +1,6 @@
-// Load environment variables first
-require('dotenv').config();
+// Backend Connection - Verified Case Sensitive Path
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const mysql = require('mysql2');
 

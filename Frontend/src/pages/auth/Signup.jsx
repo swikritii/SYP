@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/authService';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -23,17 +24,12 @@ export default function Signup() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
-          email: formData.email.trim(),
-          password: formData.password,
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok) { setError(json.message || 'Signup failed'); setLoading(false); return; }
+      const json = await authService.signup(
+        `${formData.firstName.trim()} ${formData.lastName.trim()}`,
+        formData.email.trim(),
+        formData.password
+      );
+      
       if (json.token) {
         localStorage.setItem('token', json.token);
         localStorage.setItem('user', JSON.stringify(json.user));

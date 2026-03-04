@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/authService';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -46,13 +47,8 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email.trim(), password: formData.password }),
-      });
-      const json = await res.json();
-      if (!res.ok) { setError(json.message || 'Invalid credentials'); setLoading(false); return; }
+      const json = await authService.login(formData.email.trim(), formData.password);
+      
       if (json.token) {
         localStorage.setItem('token', json.token);
         localStorage.setItem('user', JSON.stringify({ 
@@ -68,7 +64,7 @@ export default function Login() {
         else navigate('/dashboard');
       }
     } catch (err) {
-      setError('Invalid credentials');
+      setError(err.message || 'Invalid credentials');
       setLoading(false);
     }
   };

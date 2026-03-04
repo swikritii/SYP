@@ -1,4 +1,6 @@
-require('dotenv').config();
+// Backend Seed Script - Verified Case Sensitive Path
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 
