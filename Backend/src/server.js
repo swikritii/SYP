@@ -25,7 +25,57 @@ async function startServer() {
 
     // If connected, start the server on the configured port
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
+    
+    // Create HTTP server instead of using app.listen directly
+    const http = require('http');
+    const server = http.createServer(app);
+    
+    // Initialize Socket.io
+    const { Server } = require('socket.io');
+    const io = new Server(server, {
+        cors: {
+            origin: "*", // allow all in dev
+            methods: ["GET", "POST"]
+        }
+    });
+
+    const { pool } = require('./db');
+
+    // Socket.io logic
+    io.on('connection', (socket) => {
+        console.log('⚡ A user connected to chat:', socket.id);
+
+        // When a user sends a message
+        socket.on('send_message', async (data) => {
+            // data should contain { userId, userName, message }
+            try {
+                // Save to DB
+                const [result] = await pool.query(
+                    'INSERT INTO chat_messages (user_id, message) VALUES (?, ?)',
+                    [data.userId, data.message]
+                );
+
+                const messageObj = {
+                    id: result.insertId,
+                    user_id: data.userId,
+                    user_name: data.userName,
+                    message: data.message,
+                    created_at: new Date().toISOString()
+                };
+
+                // Broadcast to everyone
+                io.emit('receive_message', messageObj);
+            } catch (err) {
+                console.error('Socket error saving message:', err);
+            }
+        });
+
+        socket.on('disconnect', () => {
+            console.log('🔴 User disconnected:', socket.id);
+        });
+    });
+
+    server.listen(PORT, () => {
         console.log(`🚀 Server is running on port ${PORT}`);
         console.log(`📍 API Base: http://localhost:${PORT}`);
         console.log(`📍 Test Health: http://localhost:${PORT}/\n`);

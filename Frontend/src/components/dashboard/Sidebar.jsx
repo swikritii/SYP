@@ -13,6 +13,7 @@ export default function Sidebar({ role = 'player' }) {
       { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
       { label: 'My Bookings', icon: Calendar, path: '/dashboard/bookings' },
       { label: 'Browse Courts', icon: MapPin, path: '/browse-courts' },
+      { label: 'Chat Hub', icon: Users, path: '/chat' },
       { label: 'Settings', icon: Settings, path: '/dashboard/settings' },
     ],
     owner: [
@@ -26,6 +27,7 @@ export default function Sidebar({ role = 'player' }) {
       { label: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
       { label: 'Users', icon: Users, path: '/admin/users' },
       { label: 'Courts', icon: MapPin, path: '/admin/courts' },
+      { label: 'Bookings', icon: Calendar, path: '/admin/bookings' },
       { label: 'Analytics', icon: BarChart3, path: '/admin/analytics' },
       { label: 'Settings', icon: Settings, path: '/admin/settings' },
     ],

@@ -1,25 +1,11 @@
-const API_BASE = 'http://localhost:3000/api';
+import { apiClient } from './apiClient';
 
 export const authService = {
   async login(email, password) {
-    const res = await fetch(`${API_BASE}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Login failed');
-    return data;
+    return await apiClient.post('/login', { email, password });
   },
 
   async signup(name, email, password) {
-    const res = await fetch(`${API_BASE}/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Signup failed');
-    return data;
+    return await apiClient.post('/signup', { name, email, password });
   },
 };

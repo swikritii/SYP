@@ -12,7 +12,7 @@ const workoutData = [
     duration: '5 min',
     difficulty: 'Beginner',
     description: 'Increase hip mobility and warm up the lower body with controlled leg swings.',
-    thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac006c?auto=format&fit=crop&q=80&w=800',
+    thumbnail: 'https://img.freepik.com/premium-vector/leg-swings-exercise-woman-workout-fitness-aerobic-exercises_476141-2125.jpg?w=2000',
     videoUrl: 'https://www.youtube.com/watch?v=X00_gVwX8E4',
     shortId: 'X00_gVwX8E4',
     tips: [
@@ -46,7 +46,7 @@ const workoutData = [
     duration: '15 min',
     difficulty: 'Intermediate',
     description: 'Develop peak sprinting speed and explosive takeoff from a standstill.',
-    thumbnail: 'https://images.unsplash.com/photo-1530541930197-ff16ac911b32?auto=format&fit=crop&q=80&w=800',
+    thumbnail: 'https://www.runnersworld.com/uk/training/beginners/a33455616/running-track/',
     videoUrl: 'https://www.youtube.com/watch?v=4L_V3Xq_5G0',
     shortId: '4L_V3Xq_5G0',
     tips: [
@@ -146,7 +146,7 @@ export default function WorkoutHub() {
             <div className="aspect-video relative">
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/X00_gVwX8E4"
+                src="https://www.youtube.com/watch?v=TFSYNWPYujQ"
                 title="Featured Workout"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -1,17 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Globe, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
 
 export default function Footer() {
   const navigate = useNavigate();
 
   const columns = [
-    { title: 'Company', links: ['About Us', 'Careers', 'Press'] },
+    { title: 'Company', links: [{name: 'About Us', path: '/about-us'}, {name: 'Careers', path: '#'}, {name: 'Press', path: '#'}] },
     {
       title: 'Support',
-      links: ['Help Center', 'Contact Us', 'Privacy Policy', 'Terms of Service'],
+      links: [{name: 'Help Center', path: '/help-center'}, {name: 'Contact Us', path: '/contact-us'}, {name: 'Privacy Policy', path: '/privacy-policy'}, {name: 'Terms of Service', path: '/terms-of-service'}],
     },
-    { title: 'For Owners', links: ['List Your Court', 'Owner Dashboard'] },
+    { title: 'For Owners', links: [{name: 'List Your Court', path: '/owner/courts'}, {name: 'Owner Dashboard', path: '/owner/dashboard'}] },
   ];
 
   return (
@@ -54,10 +54,16 @@ export default function Footer() {
               <h3 className="font-bold text-gray-900 mb-4">{col.title}</h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="hover:text-indigo-900 transition">
-                      {link}
-                    </a>
+                  <li key={link.name}>
+                    {link.path.startsWith('/') ? (
+                      <Link to={link.path} className="hover:text-indigo-900 transition flex items-center gap-1">
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <a href={link.path} className="hover:text-indigo-900 transition flex items-center gap-1">
+                        {link.name}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

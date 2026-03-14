@@ -26,6 +26,18 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api', userRoutes);
 
+const courtRoutes = require('./routes/courtRoutes');
+app.use('/api/courts', courtRoutes);
+
+const bookingRoutes = require('./routes/bookingRoutes');
+app.use('/api/bookings', bookingRoutes);
+
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/api/admin', adminRoutes);
+
+const chatRoutes = require('./routes/chatRoutes');
+app.use('/api/chat', chatRoutes);
+
 // Demo /users route (if still needed)
 const { pool } = require('./db');
 app.get('/api/users', async (req, res) => {

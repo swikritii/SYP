@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Globe, Search, Menu, X, ChevronDown, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Globe, Search, Menu, X, ChevronDown, User, LogOut, LayoutDashboard, Bell } from 'lucide-react';
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const notificationsRef = useRef(null);
 
   const user = (() => {
     const userStr = localStorage.getItem('user');
@@ -28,6 +30,9 @@ export default function Navbar() {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
+      }
+      if (notificationsRef.current && !notificationsRef.current.contains(e.target)) {
+        setNotificationsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -91,11 +96,45 @@ export default function Navbar() {
               <Search className="w-5 h-5" />
             </button>
 
+            {token && (
+              <div className="relative" ref={notificationsRef}>
+                <button 
+                  onClick={() => { setNotificationsOpen(!notificationsOpen); setDropdownOpen(false); }}
+                  className="p-2 text-gray-500 hover:text-gray-900 bg-transparent border-none cursor-pointer rounded-lg hover:bg-gray-100 transition relative mt-1"
+                >
+                  <Bell className="w-5 h-5" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                
+                {notificationsOpen && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                    <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
+                      <h3 className="text-sm font-bold text-gray-900">Notifications</h3>
+                      <span className="text-xs text-indigo-600 font-medium cursor-pointer">Mark all as read</span>
+                    </div>
+                    <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                      <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                          <p className="text-sm text-gray-800">Your booking for <span className="font-semibold text-indigo-600">Futsal Arena</span> is confirmed.</p>
+                          <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
+                      </div>
+                      <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
+                          <p className="text-sm text-gray-800">Welcome to FutsalFlow! Complete your profile to get started.</p>
+                          <p className="text-xs text-gray-500 mt-1">1 day ago</p>
+                      </div>
+                    </div>
+                    <div className="px-4 py-2 border-t border-gray-100 text-center">
+                      <button className="text-xs font-semibold text-gray-600 hover:text-indigo-600 bg-transparent border-none cursor-pointer">View all notifications</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {token ? (
               /* Logged-in: Avatar + Dropdown */
               <div className="relative" ref={dropdownRef}>
                 <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  onClick={() => { setDropdownOpen(!dropdownOpen); setNotificationsOpen(false); }}
                   className="flex items-center gap-2 bg-transparent border-none cursor-pointer p-1 rounded-lg hover:bg-gray-50 transition"
                 >
                   <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-900 font-bold text-sm border-2 border-indigo-200">
@@ -127,7 +166,13 @@ export default function Navbar() {
                       Dashboard
                     </button>
                     <button
-                      onClick={() => { navigate('/dashboard/settings'); setDropdownOpen(false); }}
+                      onClick={() => { 
+                        const role = user?.role || 'player';
+                        if (role === 'admin') navigate('/admin/settings');
+                        else if (role === 'owner') navigate('/owner/settings');
+                        else navigate('/dashboard/settings');
+                        setDropdownOpen(false); 
+                      }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 bg-transparent border-none cursor-pointer transition"
                     >
                       <User className="w-4 h-4" />

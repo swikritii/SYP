@@ -22,28 +22,6 @@ export default function Login() {
       return;
     }
 
-    // Demo credentials
-    const demoCredentials = {
-      'player@demo.com': { role: 'player', path: '/dashboard' },
-      'owner@demo.com': { role: 'owner', path: '/owner/dashboard' },
-      'admin@demo.com': { role: 'admin', path: '/admin' }
-    };
-
-    if (demoCredentials[formData.email.trim()] && formData.password === 'password123') {
-      const demo = demoCredentials[formData.email.trim()];
-      setLoading(true);
-      setTimeout(() => {
-        localStorage.setItem('token', 'demo-token');
-        localStorage.setItem('user', JSON.stringify({ 
-          id: 99, 
-          name: `Demo ${demo.role.charAt(0).toUpperCase() + demo.role.slice(1)}`, 
-          email: formData.email.trim(),
-          role: demo.role 
-        }));
-        navigate(demo.path);
-      }, 500);
-      return;
-    }
 
     setLoading(true);
     try {

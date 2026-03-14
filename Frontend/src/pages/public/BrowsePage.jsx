@@ -1,69 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CourtCard from '../../components/court/CourtCard';
-
-const courts = [
-  {
-    id: 1,
-    name: 'Urban Arena Futsal',
-    location: 'Jakarta, Indonesia',
-    price: 75,
-    hours: '09:00 AM - 11:00 PM',
-    amenities: ['Locker Room', 'Parking', 'Cafe', 'WiFi'],
-    image: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80',
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: 'Elite Futsal Center',
-    location: 'Bandung, Indonesia',
-    price: 90,
-    hours: '08:00 AM - 10:00 PM',
-    amenities: ['Locker Room', 'Water Fountain', 'WiFi'],
-    image: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=400&q=80',
-    rating: 4.7,
-  },
-  {
-    id: 3,
-    name: 'Greenlight Sports Arena',
-    location: 'Surabaya, Indonesia',
-    price: 60,
-    hours: '07:00 AM - 09:00 PM',
-    amenities: ['Parking', 'Water Fountain'],
-    image: 'https://images.unsplash.com/photo-1551958219-acbc608fda15?w=400&q=80',
-    rating: 4.3,
-  },
-  {
-    id: 4,
-    name: 'Victory Futsal Court',
-    location: 'Medan, Indonesia',
-    price: 80,
-    hours: '10:00 AM - 12:00 AM',
-    amenities: ['Locker Room', 'Cafe', 'WiFi'],
-    image: 'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=400&q=80',
-    rating: 4.6,
-  },
-  {
-    id: 5,
-    name: 'Pekanbaru Sport Hall',
-    location: 'Pekanbaru, Indonesia',
-    price: 70,
-    hours: '09:00 AM - 10:00 PM',
-    amenities: ['Parking', 'Locker Room'],
-    image: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=400&q=80',
-    rating: 4.2,
-  },
-  {
-    id: 6,
-    name: 'Mega Futsal Arena',
-    location: 'Jakarta, Indonesia',
-    price: 95,
-    hours: '08:30 AM - 11:30 PM',
-    amenities: ['Locker Room', 'Parking', 'Cafe', 'WiFi', 'Water Fountain'],
-    image: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80',
-    rating: 4.9,
-  },
-];
+import { apiClient } from '../../services/apiClient';
 
 const StarRating = ({ filled }) => (
   <span style={{ color: filled ? '#f59e0b' : '#d1d5db', fontSize: 14 }}>★</span>
@@ -71,9 +9,35 @@ const StarRating = ({ filled }) => (
 
 export default function BrowsePage() {
   const navigate = useNavigate();
-  const [priceRange, setPriceRange] = useState(150);
+  const [courts, setCourts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [priceRange, setPriceRange] = useState(2500); // Max reasonable price in RS
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [location, setLocation] = useState('All Locations');
+
+  useEffect(() => {
+    const fetchCourts = async () => {
+      try {
+        const data = await apiClient.get('/courts');
+        // If your images are stored as JSON strings in the db, parse them here
+        const parsedCourts = data.map(c => ({
+            ...c,
+            price: Number(c.price_per_hour),
+            amenities: c.amenities || ['Locker Room', 'Parking', 'WiFi'], // mock amenities if not in DB
+            image: (c.images && typeof c.images === 'string') 
+                    ? JSON.parse(c.images)[0] || 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80'
+                    : 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80',
+            rating: 4.5
+        }));
+        setCourts(parsedCourts);
+      } catch (err) {
+        console.error('Failed to fetch courts', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourts();
+  }, []);
 
   const toggleAmenity = (a) =>
     setSelectedAmenities((prev) =>
@@ -83,10 +47,15 @@ export default function BrowsePage() {
   const filteredCourts = courts.filter((c) => {
     if (c.price > priceRange) return false;
     if (location !== 'All Locations' && !c.location.includes(location)) return false;
+    // Basic amenities filter (mocked)
     if (selectedAmenities.length > 0 && !selectedAmenities.every((a) => c.amenities.includes(a)))
       return false;
     return true;
   });
+
+  if (loading) {
+      return <div className="text-center py-20 text-gray-500">Loading courts...</div>;
+  }
 
   return (
     <div>
@@ -116,7 +85,7 @@ export default function BrowsePage() {
               onChange={(e) => setLocation(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
             >
-              {['All Locations', 'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Pekanbaru'].map(
+              {['All Locations', 'Kathmandu', 'Lalitpur', 'Bhaktapur', 'Pokhara', 'Dharan', 'Biratnagar', 'Butwal', 'Chitwan', 'Hetauda', 'Kirtipur', 'Itahari', 'Bhairahawa', 'Nepalgunj'].map(
                 (l) => (
                   <option key={l}>{l}</option>
                 )
@@ -129,16 +98,17 @@ export default function BrowsePage() {
             <span className="text-sm font-semibold text-gray-700 block mb-2">Price Range</span>
             <input
               type="range"
-              min={50}
-              max={150}
+              min={500}
+              max={2500}
+              step={100}
               value={priceRange}
               onChange={(e) => setPriceRange(Number(e.target.value))}
               className="w-full accent-indigo-900"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>Rs. 50</span>
+              <span>Rs. 500</span>
               <span className="font-semibold text-indigo-900">Rs. {priceRange}</span>
-              <span>Rs. 150</span>
+              <span>Rs. 2500</span>
             </div>
           </div>
 
