@@ -22,6 +22,12 @@ export const apiClient = {
     const data = await response.json();
 
     if (!response.ok) {
+      if (response.status === 403 || response.status === 401) {
+        // Token might be invalid or expired
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
       throw new Error(data.message || 'API request failed');
     }
 

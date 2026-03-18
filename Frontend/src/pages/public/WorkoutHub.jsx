@@ -199,50 +199,6 @@ export default function WorkoutHub() {
         )}
       </div>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-100 py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div className="col-span-1 md:col-span-2">
-               <div className="flex items-center gap-2 mb-6">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-black text-xl">F</span>
-                  </div>
-                  <span className="text-2xl font-black text-gray-900 tracking-tight">FutsalFlow</span>
-               </div>
-               <p className="text-gray-500 max-w-md leading-relaxed">
-                 Elite booking and performance hub for the modern futsal community. Manage bookings, discover courts, and level up your game with our professional tools.
-               </p>
-            </div>
-            
-            <div>
-              <h4 className="text-gray-900 font-bold mb-6">Explore</h4>
-              <ul className="space-y-4">
-                <li><a href="/" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Home</a></li>
-                <li><a href="/browse-courts" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Browse Courts</a></li>
-                <li><a href="/workout-hub" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Workout Hub</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-gray-900 font-bold mb-6">Dashboard</h4>
-              <ul className="space-y-4">
-                <li><a href="/owner/dashboard" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Owner Portal</a></li>
-                <li><a href="/admin" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Admin Panel</a></li>
-                <li><a href="/login" className="text-gray-500 hover:text-blue-600 transition-colors font-medium">Sign In</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-gray-400 text-sm font-medium">© 2025 FutsalFlow. All rights reserved.</p>
-            <div className="flex gap-8">
-              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">Terms of Service</a>
-            </div>
-          </div>
-        </div>
-      </footer>
 
       {/* Modal */}
       {selectedWorkout && (

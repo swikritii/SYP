@@ -23,7 +23,8 @@ export default function BrowsePage() {
         const parsedCourts = data.map(c => ({
             ...c,
             price: Number(c.price_per_hour),
-            amenities: c.amenities || ['Locker Room', 'Parking', 'WiFi'], // mock amenities if not in DB
+            // Map common amenities or provide consistent mocks matching filter labels
+            amenities: c.amenities || ['Locker Room', 'Parking', 'Cafe'], 
             image: (c.images && typeof c.images === 'string') 
                     ? JSON.parse(c.images)[0] || 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80'
                     : 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80',
@@ -45,11 +46,27 @@ export default function BrowsePage() {
     );
 
   const filteredCourts = courts.filter((c) => {
+    // 0. Search Filter
+    const searchParams = new URLSearchParams(window.location.search);
+    const search = searchParams.get('search')?.toLowerCase();
+    if (search && !c.name.toLowerCase().includes(search) && !c.location.toLowerCase().includes(search)) {
+        return false;
+    }
+
+    // 1. Price Filter
     if (c.price > priceRange) return false;
+
+    // 2. Location Filter
     if (location !== 'All Locations' && !c.location.includes(location)) return false;
-    // Basic amenities filter (mocked)
-    if (selectedAmenities.length > 0 && !selectedAmenities.every((a) => c.amenities.includes(a)))
-      return false;
+
+    // 3. Amenities Filter
+    if (selectedAmenities.length > 0) {
+      const hasAllAmenities = selectedAmenities.every(a => 
+        c.amenities.some(ca => ca.toLowerCase() === a.toLowerCase())
+      );
+      if (!hasAllAmenities) return false;
+    }
+
     return true;
   });
 

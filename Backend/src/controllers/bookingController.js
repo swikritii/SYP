@@ -25,7 +25,7 @@ const BookingController = {
             );
 
             if (existing.length > 0) {
-                return res.status(409).json({ message: 'Conflict: The court is already booked for this specific time slot.' });
+                return res.status(409).json({ message: 'Conflict: This court is already booked for this specific time slot. Please choose another time.' });
             }
 
             // Reward Logic: Check how many non-free, confirmed past bookings this user has
@@ -138,6 +138,33 @@ const BookingController = {
         } catch (err) {
             console.error('Error updating booking status:', err);
             res.status(500).json({ message: 'Internal Server Error while updating booking status.', error: err.message });
+        }
+    },
+
+    /**
+     * Cancel Booking (Player functionality)
+     */
+    async cancelBooking(req, res) {
+        try {
+            const bookingId = req.params.id;
+            
+            // Check if booking belongs to user
+            const [booking] = await pool.query('SELECT * FROM bookings WHERE id = ? AND user_id = ?', [bookingId, req.user.id]);
+            
+            if (booking.length === 0) {
+                return res.status(404).json({ message: 'Booking not found or you are not authorized to cancel it.' });
+            }
+
+            if (booking[0].status === 'cancelled') {
+                return res.status(400).json({ message: 'Booking is already cancelled.' });
+            }
+
+            await pool.query('UPDATE bookings SET status = "cancelled" WHERE id = ?', [bookingId]);
+            
+            res.json({ message: 'Booking cancelled successfully.' });
+        } catch (err) {
+            console.error('Error cancelling booking:', err);
+            res.status(500).json({ message: 'Internal Server Error while cancelling the booking.', error: err.message });
         }
     }
 };

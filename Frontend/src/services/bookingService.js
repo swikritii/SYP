@@ -21,7 +21,7 @@ export const bookingService = {
   },
 
   async getMyBookings() {
-    const res = await fetch(`${API_BASE}/bookings/my`, {
+    const res = await fetch(`${API_BASE}/bookings/me`, {
       headers: getHeaders(),
     });
     const data = await res.json();

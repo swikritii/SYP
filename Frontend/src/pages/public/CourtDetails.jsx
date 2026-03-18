@@ -91,6 +91,7 @@ export default function CourtDetails() {
 
   const tabs = [
     { key: 'overview', label: 'Overview' },
+    { key: 'video', label: 'Court Video' },
     { key: 'reviews', label: `Reviews (${court?.reviews?.length || 0})` },
     { key: 'rules', label: 'Rules' },
   ];
@@ -259,6 +260,34 @@ export default function CourtDetails() {
                           {court.email}
                         </div>
                       </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Video Tab */}
+                {activeTab === 'video' && (
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <Star className="w-5 h-5 text-indigo-900" />
+                        Court Tour Video
+                      </h3>
+                      {court.video_url ? (
+                        <div className="relative rounded-2xl overflow-hidden bg-black aspect-video shadow-lg">
+                          <iframe
+                            className="absolute inset-0 w-full h-full"
+                            src={court.video_url}
+                            title="Court Video"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      ) : (
+                        <div className="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                           <p className="text-gray-500 italic">No video tour available for this court yet.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

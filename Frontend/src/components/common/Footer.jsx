@@ -33,10 +33,10 @@ export default function Footer() {
               Your ultimate platform for booking futsal courts and staying active.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="text-gray-600 hover:text-indigo-900 transition">
+              <a href="https://www.facebook.com/swikriti.mishra.147428" target="_blank" rel="noreferrer" className="text-gray-600 hover:text-indigo-900 transition">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-600 hover:text-indigo-900 transition">
+              <a href="https://www.instagram.com/swikritimishra___/" target="_blank" rel="noreferrer" className="text-gray-600 hover:text-indigo-900 transition">
                 <Instagram className="w-5 h-5" />
               </a>
               <a href="#" className="text-gray-600 hover:text-indigo-900 transition">

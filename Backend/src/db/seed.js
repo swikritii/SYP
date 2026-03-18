@@ -49,6 +49,18 @@ async function seed() {
             }
         }
 
+        // Ensure video_url column exists
+        try {
+            await connection.query('ALTER TABLE courts ADD COLUMN video_url VARCHAR(255) AFTER images');
+            console.log('✅ Added video_url column to courts table');
+        } catch (e) {
+            // Already exists
+        }
+
+        // DELETE unwanted Indonesian courts
+        console.log('🗑️ Removing Indonesian courts...');
+        await connection.query('DELETE FROM courts WHERE name IN ("Urban Futsal", "Elite Futsal", "Greenlight Futsal", "Futsal Arena", "Pro Futsal", "Stadium Hub")');
+
         // Add demo courts
         const [ownerRows] = await connection.query('SELECT id FROM users WHERE email = ?', ['owner@demo.com']);
         if (ownerRows.length > 0) {
@@ -56,25 +68,28 @@ async function seed() {
             
             const courts = [
               {
-                name: 'Urban Arena Futsal',
-                location: 'Jakarta, Indonesia',
-                price: 75,
-                description: 'Urban Arena Futsal is a state-of-the-art indoor futsal facility located in the heart of Jakarta.',
-                images: JSON.stringify(['https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&q=80']),
+                name: 'Kirtipur Futsal Hub',
+                location: 'Kirtipur, Kathmandu',
+                price: 1500,
+                description: 'A premium futsal facility in Kirtipur with excellent amenities and a competitive atmosphere.',
+                images: JSON.stringify(['https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80', 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&q=80']),
+                video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Rickroll as placeholder OR a real futsal video
               },
               {
-                name: 'Elite Futsal Center',
-                location: 'Bandung, Indonesia',
-                price: 90,
-                description: 'Elite Futsal Center offers premium indoor courts with professional-grade facilities.',
-                images: JSON.stringify(['https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&q=80']),
+                name: 'Pokhara Sports Castle',
+                location: 'Pokhara, Kaski',
+                price: 1800,
+                description: 'Enjoy futsal with a view of the mountains. One of the best courts in Pokhara.',
+                images: JSON.stringify(['https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&q=80', 'https://images.unsplash.com/photo-1624880353868-239871bc3a6a?w=800&q=80']),
+                video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
               },
               {
-                name: 'Greenlight Sports Arena',
-                location: 'Surabaya, Indonesia',
-                price: 60,
-                description: 'Affordable and well-maintained courts for everyone.',
+                name: 'Biratnagar United Futsal',
+                location: 'Biratnagar, Morang',
+                price: 1200,
+                description: 'Well-maintained indoor court in Biratnagar, perfect for local tournaments and friendly matches.',
                 images: JSON.stringify(['https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80']),
+                video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
               }
             ];
 
@@ -82,10 +97,17 @@ async function seed() {
                 const [existingCourt] = await connection.query('SELECT id FROM courts WHERE name = ?', [court.name]);
                 if (existingCourt.length === 0) {
                     await connection.query(
-                        'INSERT INTO courts (owner_id, name, location, price_per_hour, description, images) VALUES (?, ?, ?, ?, ?, ?)',
-                        [ownerId, court.name, court.location, court.price, court.description, court.images]
+                        'INSERT INTO courts (owner_id, name, location, price_per_hour, description, images, video_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                        [ownerId, court.name, court.location, court.price, court.description, court.images, court.video_url]
                     );
                     console.log(`✅ Created court: ${court.name}`);
+                } else {
+                    // Update images and video_url for existing courts
+                    await connection.query(
+                        'UPDATE courts SET images = ?, video_url = ?, location = ?, description = ? WHERE id = ?',
+                        [court.images, court.video_url, court.location, court.description, existingCourt[0].id]
+                    );
+                    console.log(`✅ Updated court: ${court.name}`);
                 }
             }
         }

@@ -8,6 +8,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef(null);
   const notificationsRef = useRef(null);
 
@@ -38,6 +39,14 @@ export default function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/browse-courts?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
 
   const navLinks = [
     { label: 'Home', path: '/' },
@@ -92,9 +101,16 @@ export default function Navbar() {
 
           {/* Desktop Right Side */}
           <div className="hidden md:flex items-center gap-3">
-            <button className="p-2 text-gray-500 hover:text-gray-900 bg-transparent border-none cursor-pointer rounded-lg hover:bg-gray-100 transition">
-              <Search className="w-5 h-5" />
-            </button>
+            <form onSubmit={handleSearch} className="relative group">
+              <input
+                type="text"
+                placeholder="Search courts..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-40 lg:w-60 pl-10 pr-4 py-2 bg-gray-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all outline-none"
+              />
+              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-900 transition-colors" />
+            </form>
 
             {token && (
               <div className="relative" ref={notificationsRef}>
@@ -110,20 +126,13 @@ export default function Navbar() {
                   <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
                     <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
                       <h3 className="text-sm font-bold text-gray-900">Notifications</h3>
-                      <span className="text-xs text-indigo-600 font-medium cursor-pointer">Mark all as read</span>
+                      <span className="text-xs text-indigo-600 font-medium cursor-pointer hover:underline" onClick={() => setNotificationsOpen(false)}>Close</span>
                     </div>
                     <div className="max-h-64 overflow-y-auto custom-scrollbar">
-                      <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
-                          <p className="text-sm text-gray-800">Your booking for <span className="font-semibold text-indigo-600">Futsal Arena</span> is confirmed.</p>
-                          <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
+                      <div className="px-8 py-10 text-center">
+                        <Bell className="w-10 h-10 text-gray-200 mx-auto mb-3" />
+                        <p className="text-sm text-gray-500">No new notifications</p>
                       </div>
-                      <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
-                          <p className="text-sm text-gray-800">Welcome to FutsalFlow! Complete your profile to get started.</p>
-                          <p className="text-xs text-gray-500 mt-1">1 day ago</p>
-                      </div>
-                    </div>
-                    <div className="px-4 py-2 border-t border-gray-100 text-center">
-                      <button className="text-xs font-semibold text-gray-600 hover:text-indigo-600 bg-transparent border-none cursor-pointer">View all notifications</button>
                     </div>
                   </div>
                 )}

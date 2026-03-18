@@ -68,7 +68,7 @@ const CourtController = {
                 return res.status(403).json({ message: 'Access denied. Must be an owner or admin to create a court.' });
             }
 
-            const { name, location, price_per_hour, description, images } = req.body;
+            const { name, location, price_per_hour, description, images, video_url } = req.body;
             
             // Validate required fields
             if (!name || !location || !price_per_hour) {
@@ -77,8 +77,8 @@ const CourtController = {
 
             // Insert into database. Images are stored as a JSON string.
             const [result] = await pool.query(
-                'INSERT INTO courts (owner_id, name, location, price_per_hour, description, images) VALUES (?, ?, ?, ?, ?, ?)',
-                [req.user.id, name, location, price_per_hour, description, JSON.stringify(images || [])]
+                'INSERT INTO courts (owner_id, name, location, price_per_hour, description, images, video_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [req.user.id, name, location, price_per_hour, description, JSON.stringify(images || []), video_url]
             );
 
             res.status(201).json({ message: 'Court added successfully', courtId: result.insertId });
@@ -106,12 +106,12 @@ const CourtController = {
                 return res.status(403).json({ message: 'Forbidden: You are not authorized to update this court.' });
             }
 
-            const { name, location, price_per_hour, description, images } = req.body;
+            const { name, location, price_per_hour, description, images, video_url } = req.body;
 
             // Update court details
             await pool.query(
-                'UPDATE courts SET name = ?, location = ?, price_per_hour = ?, description = ?, images = ? WHERE id = ?',
-                [name, location, price_per_hour, description, JSON.stringify(images || []), courtId]
+                'UPDATE courts SET name = ?, location = ?, price_per_hour = ?, description = ?, images = ?, video_url = ? WHERE id = ?',
+                [name, location, price_per_hour, description, JSON.stringify(images || []), video_url, courtId]
             );
 
             res.json({ message: 'Court updated successfully' });

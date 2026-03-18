@@ -41,9 +41,19 @@ import AdminBookings from '../pages/admin/AdminBookings';
 import AdminAnalytics from '../pages/admin/AdminAnalytics';
 
 // Private Route wrapper
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
-  return token ? children : <Navigate to="/login" replace />;
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 export default function AppRoutes() {
@@ -69,7 +79,7 @@ export default function AppRoutes() {
       {/* Player Dashboard — DashboardLayout with player sidebar */}
       <Route
         element={
-          <PrivateRoute>
+          <PrivateRoute allowedRoles={['player']}>
             <DashboardLayout role="player" />
           </PrivateRoute>
         }
@@ -84,7 +94,7 @@ export default function AppRoutes() {
       {/* Owner Dashboard */}
       <Route
         element={
-          <PrivateRoute>
+          <PrivateRoute allowedRoles={['owner']}>
             <DashboardLayout role="owner" />
           </PrivateRoute>
         }
@@ -99,7 +109,7 @@ export default function AppRoutes() {
       {/* Admin Panel */}
       <Route
         element={
-          <PrivateRoute>
+          <PrivateRoute allowedRoles={['admin']}>
             <DashboardLayout role="admin" />
           </PrivateRoute>
         }
