@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Globe, Search, Menu, X, ChevronDown, User, LogOut, LayoutDashboard, Bell } from 'lucide-react';
+import { Globe, Search, Menu, X, ChevronDown, User, LogOut, LayoutDashboard, Bell, Trash2, CheckCircle } from 'lucide-react';
+import notificationService from '../../services/notificationService';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -8,6 +9,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef(null);
   const notificationsRef = useRef(null);
@@ -18,6 +21,53 @@ export default function Navbar() {
   })();
 
   const token = localStorage.getItem('token');
+
+  const fetchNotifications = async () => {
+    if (!token) return;
+    try {
+      const data = await notificationService.getNotifications();
+      if (data.success) {
+        setNotifications(data.notifications);
+        setUnreadCount(data.notifications.filter(n => !n.is_read).length);
+      }
+    } catch (err) {
+      console.error('Failed to fetch notifications:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+    // Refresh notifications every 30 seconds
+    const interval = setInterval(fetchNotifications, 30000);
+    return () => clearInterval(interval);
+  }, [token]);
+
+  const handleMarkAsRead = async (id) => {
+    try {
+      await notificationService.markAsRead(id);
+      fetchNotifications();
+    } catch (err) {
+      console.error('Failed to mark notification as read:', err);
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await notificationService.markAllAsRead();
+      fetchNotifications();
+    } catch (err) {
+      console.error('Failed to mark all as read:', err);
+    }
+  };
+
+  const handleDeleteNotification = async (id) => {
+    try {
+      await notificationService.deleteNotification(id);
+      fetchNotifications();
+    } catch (err) {
+      console.error('Failed to delete notification:', err);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -119,20 +169,89 @@ export default function Navbar() {
                   className="p-2 text-gray-500 hover:text-gray-900 bg-transparent border-none cursor-pointer rounded-lg hover:bg-gray-100 transition relative mt-1"
                 >
                   <Bell className="w-5 h-5" />
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border border-white">
+                      {unreadCount}
+                    </span>
+                  )}
                 </button>
                 
                 {notificationsOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
-                    <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
-                      <h3 className="text-sm font-bold text-gray-900">Notifications</h3>
-                      <span className="text-xs text-indigo-600 font-medium cursor-pointer hover:underline" onClick={() => setNotificationsOpen(false)}>Close</span>
-                    </div>
-                    <div className="max-h-64 overflow-y-auto custom-scrollbar">
-                      <div className="px-8 py-10 text-center">
-                        <Bell className="w-10 h-10 text-gray-200 mx-auto mb-3" />
-                        <p className="text-sm text-gray-500">No new notifications</p>
+                  <div className="absolute right-0 mt-3 w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="px-5 py-3 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 rounded-t-2xl">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest">Notifications</h3>
+                        {unreadCount > 0 && (
+                          <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-black rounded-full uppercase">
+                            {unreadCount} New
+                          </span>
+                        )}
                       </div>
+                      <button 
+                        onClick={handleMarkAllAsRead}
+                        className="text-[10px] text-indigo-600 font-black uppercase tracking-widest hover:text-indigo-900 transition bg-transparent border-none cursor-pointer"
+                      >
+                        Mark all as read
+                      </button>
+                    </div>
+                    
+                    <div className="max-h-96 overflow-y-auto custom-scrollbar">
+                      {notifications.length > 0 ? (
+                        <div className="divide-y divide-gray-50">
+                          {notifications.map((notification) => (
+                            <div 
+                              key={notification.id} 
+                              className={`p-5 hover:bg-gray-50 transition-colors group relative ${!notification.is_read ? 'bg-indigo-50/30' : ''}`}
+                            >
+                              <div className="flex gap-4">
+                                <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${!notification.is_read ? 'bg-indigo-600' : 'bg-transparent'}`}></div>
+                                <div className="flex-1">
+                                  <p className={`text-sm leading-relaxed ${!notification.is_read ? 'text-gray-900 font-bold' : 'text-gray-600 font-medium'}`}>
+                                    {notification.message}
+                                  </p>
+                                  <p className="text-[10px] text-gray-400 mt-2 font-bold uppercase tracking-widest">
+                                    {new Date(notification.created_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                  </p>
+                                </div>
+                                <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  {!notification.is_read && (
+                                    <button 
+                                      onClick={() => handleMarkAsRead(notification.id)}
+                                      className="p-1.5 text-indigo-600 hover:bg-indigo-100 rounded-md transition bg-transparent border-none cursor-pointer"
+                                      title="Mark as read"
+                                    >
+                                      <CheckCircle size={14} />
+                                    </button>
+                                  )}
+                                  <button 
+                                    onClick={() => handleDeleteNotification(notification.id)}
+                                    className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition bg-transparent border-none cursor-pointer"
+                                    title="Delete"
+                                  >
+                                    <Trash2 size={14} />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="px-10 py-16 text-center">
+                          <Bell className="w-12 h-12 text-gray-100 mx-auto mb-4" />
+                          <p className="text-gray-400 font-bold text-sm uppercase tracking-widest leading-loose">
+                            Your notification inbox <br /> is perfectly empty.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="px-5 py-3 border-t border-gray-100 text-center bg-gray-50/30 rounded-b-2xl">
+                        <button 
+                          onClick={() => setNotificationsOpen(false)}
+                          className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em] hover:text-gray-900 transition bg-transparent border-none cursor-pointer"
+                        >
+                          Close Panel
+                        </button>
                     </div>
                   </div>
                 )}

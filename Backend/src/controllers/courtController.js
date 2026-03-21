@@ -1,4 +1,5 @@
 const { pool } = require('../db');
+const NotificationService = require('../services/notificationService');
 
 const CourtController = {
     /**
@@ -75,10 +76,16 @@ const CourtController = {
                 return res.status(400).json({ message: 'Validation Error: Name, location, and price_per_hour are required fields.' });
             }
 
-            // Insert into database. Images are stored as a JSON string.
             const [result] = await pool.query(
                 'INSERT INTO courts (owner_id, name, location, price_per_hour, description, images, video_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [req.user.id, name, location, price_per_hour, description, JSON.stringify(images || []), video_url]
+            );
+
+            // Trigger notification
+            await NotificationService.createNotification(
+                req.user.id,
+                'court_added',
+                `Successfully added new court: ${name}`
             );
 
             res.status(201).json({ message: 'Court added successfully', courtId: result.insertId });
@@ -108,10 +115,16 @@ const CourtController = {
 
             const { name, location, price_per_hour, description, images, video_url } = req.body;
 
-            // Update court details
             await pool.query(
                 'UPDATE courts SET name = ?, location = ?, price_per_hour = ?, description = ?, images = ?, video_url = ? WHERE id = ?',
                 [name, location, price_per_hour, description, JSON.stringify(images || []), video_url, courtId]
+            );
+
+            // Trigger notification
+            await NotificationService.createNotification(
+                req.user.id,
+                'court_updated',
+                `Successfully updated court: ${name}`
             );
 
             res.json({ message: 'Court updated successfully' });

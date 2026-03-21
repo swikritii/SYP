@@ -1,4 +1,5 @@
 const { pool } = require('../db');
+const NotificationService = require('../services/notificationService');
 
 const BookingController = {
     /**
@@ -134,6 +135,19 @@ const BookingController = {
                 return res.status(404).json({ message: 'Booking not found.' });
             }
 
+            // Trigger notification for the player
+            const [booking] = await pool.query(
+                'SELECT b.*, c.name as court_name FROM bookings b JOIN courts c ON b.court_id = c.id WHERE b.id = ?',
+                [bookingId]
+            );
+            if (booking.length > 0) {
+                await NotificationService.createNotification(
+                    booking[0].user_id,
+                    'system_alert',
+                    `Your booking for ${booking[0].court_name} on ${new Date(booking[0].date).toLocaleDateString()} has been ${status}.`
+                );
+            }
+
             res.json({ message: 'Booking status updated successfully' });
         } catch (err) {
             console.error('Error updating booking status:', err);
@@ -161,6 +175,27 @@ const BookingController = {
 
             await pool.query('UPDATE bookings SET status = "cancelled" WHERE id = ?', [bookingId]);
             
+            // Trigger notifications
+            const [bookingInfo] = await pool.query(
+                'SELECT b.*, c.name as court_name, c.owner_id FROM bookings b JOIN courts c ON b.court_id = c.id WHERE b.id = ?',
+                [bookingId]
+            );
+
+            if (bookingInfo.length > 0) {
+                // Notify User
+                await NotificationService.createNotification(
+                    req.user.id,
+                    'booking_cancelled',
+                    `You have cancelled your booking for ${bookingInfo[0].court_name}.`
+                );
+                // Notify Owner
+                await NotificationService.createNotification(
+                    bookingInfo[0].owner_id,
+                    'booking_cancelled',
+                    `A booking for your court ${bookingInfo[0].court_name} has been cancelled by the player.`
+                );
+            }
+
             res.json({ message: 'Booking cancelled successfully.' });
         } catch (err) {
             console.error('Error cancelling booking:', err);

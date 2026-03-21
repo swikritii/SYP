@@ -38,6 +38,9 @@ app.use('/api/admin', adminRoutes);
 const chatRoutes = require('./routes/chatRoutes');
 app.use('/api/chat', chatRoutes);
 
+const notificationRoutes = require('./routes/notificationRoutes');
+app.use('/api/notifications', notificationRoutes);
+
 // Demo /users route (if still needed)
 const { pool } = require('./db');
 app.get('/api/users', async (req, res) => {
