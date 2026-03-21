@@ -12,15 +12,15 @@ const WorkoutFilter = ({ activeFilter, setFilter }) => {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center gap-3 my-8">
+    <div className="flex flex-wrap justify-center gap-4 my-12">
       {categories.map((category) => (
         <button
           key={category}
           onClick={() => setFilter(category)}
-          className={`px-6 py-2 rounded-full font-medium transition-all duration-300 border ${
+          className={`px-8 py-3 rounded-2xl font-black text-sm uppercase tracking-widest transition-all duration-500 border-2 ${
             activeFilter === category
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md transform scale-105'
-              : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-500'
+              ? 'bg-indigo-950 text-white border-indigo-950 shadow-[0_10px_20px_-5px_rgba(30,27,75,0.4)] scale-105'
+              : 'bg-white text-gray-400 border-gray-100 hover:border-indigo-100 hover:text-indigo-600 hover:shadow-lg'
           }`}
         >
           {category}

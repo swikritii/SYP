@@ -20,7 +20,7 @@ async function seed() {
         // Ensure role column exists (in case init-db wasn't run)
         try {
             await connection.query('ALTER TABLE users ADD COLUMN role ENUM("player", "owner", "admin") DEFAULT "player" AFTER password');
-            console.log('✅ Added role column to users table');
+            console.log(' Added role column to users table');
         } catch (e) {
             // Probably already exists
         }
@@ -41,18 +41,18 @@ async function seed() {
                     'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
                     [name, email, pass, role]
                 );
-                console.log(`✅ Created ${role} user: ${email}`);
+                console.log(` Created ${role} user: ${email}`);
             } else {
                 // Update role just in case
                 await connection.query('UPDATE users SET role = ? WHERE email = ?', [role, email]);
-                console.log(`ℹ️ User ${email} already exists, role updated to ${role}`);
+                console.log(`ℹ User ${email} already exists, role updated to ${role}`);
             }
         }
 
         // Ensure video_url column exists
         try {
             await connection.query('ALTER TABLE courts ADD COLUMN video_url VARCHAR(255) AFTER images');
-            console.log('✅ Added video_url column to courts table');
+            console.log(' Added video_url column to courts table');
         } catch (e) {
             // Already exists
         }
@@ -100,25 +100,25 @@ async function seed() {
                         'INSERT INTO courts (owner_id, name, location, price_per_hour, description, images, video_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
                         [ownerId, court.name, court.location, court.price, court.description, court.images, court.video_url]
                     );
-                    console.log(`✅ Created court: ${court.name}`);
+                    console.log(` Created court: ${court.name}`);
                 } else {
                     // Update images and video_url for existing courts
                     await connection.query(
                         'UPDATE courts SET images = ?, video_url = ?, location = ?, description = ? WHERE id = ?',
                         [court.images, court.video_url, court.location, court.description, existingCourt[0].id]
                     );
-                    console.log(`✅ Updated court: ${court.name}`);
+                    console.log(` Updated court: ${court.name}`);
                 }
             }
         }
 
-        console.log('\n✨ Seeding complete! Credentials:');
+        console.log('\n Seeding complete! Credentials:');
         console.log('   - Player: player@demo.com / password123');
         console.log('   - Owner: owner@demo.com / password123');
         console.log('   - Admin: admin@demo.com / password123\n');
 
     } catch (err) {
-        console.error('❌ Seeding failed:', err.message);
+        console.error(' Seeding failed:', err.message);
     } finally {
         if (connection) await connection.end();
     }

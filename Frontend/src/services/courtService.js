@@ -42,4 +42,25 @@ export const courtService = {
     if (!res.ok) throw new Error(data.message || 'Failed to create court');
     return data;
   },
+
+  async updateCourt(id, courtData) {
+    const res = await fetch(`${API_BASE}/courts/${id}`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(courtData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to update court');
+    return data;
+  },
+
+  async deleteCourt(id) {
+    const res = await fetch(`${API_BASE}/courts/${id}`, {
+      method: 'DELETE',
+      headers: getHeaders(),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to delete court');
+    return data;
+  },
 };

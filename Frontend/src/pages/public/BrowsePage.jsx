@@ -25,9 +25,11 @@ export default function BrowsePage() {
             price: Number(c.price_per_hour),
             // Map common amenities or provide consistent mocks matching filter labels
             amenities: c.amenities || ['Locker Room', 'Parking', 'Cafe'], 
-            image: (c.images && typeof c.images === 'string') 
-                    ? JSON.parse(c.images)[0] || 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80'
-                    : 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=400&q=80',
+            image: Array.isArray(c.images) 
+                    ? c.images[0]
+                    : (typeof c.images === 'string' && c.images.startsWith('[') 
+                        ? JSON.parse(c.images)[0] 
+                        : (c.images || `https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=400&h=300&sig=${c.id}`)),
             rating: 4.5
         }));
         setCourts(parsedCourts);

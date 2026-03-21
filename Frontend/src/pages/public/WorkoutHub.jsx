@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import WorkoutFilter from '../../components/workout/WorkoutFilter';
 import WorkoutCard from '../../components/workout/WorkoutCard';
 import WorkoutModal from '../../components/workout/WorkoutModal';
-import { Play } from 'lucide-react';
+import { Play, Zap, Trophy, Target, ShieldCheck } from 'lucide-react';
 
 const workoutData = [
   {
@@ -46,7 +46,7 @@ const workoutData = [
     duration: '15 min',
     difficulty: 'Intermediate',
     description: 'Develop peak sprinting speed and explosive takeoff from a standstill.',
-    thumbnail: 'https://www.runnersworld.com/uk/training/beginners/a33455616/running-track/',
+    thumbnail: 'https://images.unsplash.com/photo-1543351611-58f69d7c1781?auto=format&fit=crop&q=80&w=800',
     videoUrl: 'https://www.youtube.com/watch?v=4L_V3Xq_5G0',
     shortId: '4L_V3Xq_5G0',
     tips: [
@@ -129,60 +129,93 @@ export default function WorkoutHub() {
   };
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen font-sans">
-      {/* Hero Section */}
-      <section className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} pt-12 pb-16 px-4`}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight">
-              Pre-Match <span className="text-blue-600">Warm-Up</span>
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Prepare your body for peak performance and minimize injury risk. Access our curated collection of pro-level football drills and routines.
-            </p>
-          </div>
+    <div className="bg-white min-h-screen font-sans">
+      {/* Cinematic Hero Section */}
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-[#0a0c10] text-white">
+        {/* Abstract Background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-[-20%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/20 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+          <div className="absolute inset-0 bg-[#0a0c10]/80"></div>
+        </div>
 
-          <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 group">
-            <div className="aspect-video relative">
-              <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/watch?v=TFSYNWPYujQ"
-                title="Featured Workout"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+        <div className={`relative z-10 max-w-4xl mx-auto px-6 text-center transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+                <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
+                <span className="text-xs font-black tracking-[0.2em] uppercase text-gray-300">Pro-Level Performance</span>
             </div>
-            <div className="p-8 md:p-10">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">Dynamic Futsal Warm-Up: Full Body Activation</h2>
-                        <p className="text-gray-500 max-w-xl">A comprehensive routine to activate all major muscle groups and boost cardiovascular readiness before your match.</p>
+            
+            <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none">
+                TRAIN LIKE A <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-emerald-400">CHAMPION</span>
+            </h1>
+            
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10 font-medium italic">
+                "The game is won in the hours you spend when no one is watching."
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-12 pt-8 border-t border-white/5">
+                {[
+                    { icon: Target, label: "Precision Drills", val: "20+" },
+                    { icon: ShieldCheck, label: "Injury Prevention", val: "100%" },
+                    { icon: Trophy, label: "Pro Coaching", val: "Elite" }
+                ].map((stat, idx) => (
+                    <div key={idx} className="flex flex-col items-center gap-2">
+                        <stat.icon className="w-5 h-5 text-indigo-400" />
+                        <span className="text-2xl font-black leading-none">{stat.val}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">{stat.label}</span>
                     </div>
-                    <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 group-hover:scale-105 active:scale-95">
-                        <Play fill="white" size={20} />
-                        Get Started
+                ))}
+            </div>
+        </div>
+      </section>
+
+      {/* Main Content Area */}
+      <div className="max-w-7xl mx-auto px-6 -mt-20 relative z-20 pb-32">
+        {/* Featured Video Section */}
+        <div className={`transition-all duration-1000 delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+          <div className="bg-white rounded-[40px] overflow-hidden shadow-2xl border border-gray-100 group">
+            <div className="grid grid-cols-1 lg:grid-cols-5 items-stretch">
+                <div className="lg:col-span-3 aspect-video relative">
+                    <iframe
+                        className="w-full h-full"
+                        src="https://www.youtube.com/embed/TFSYNWPYujQ"
+                        title="Featured Workout"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    />
+                </div>
+                <div className="lg:col-span-2 p-10 md:p-14 flex flex-col justify-center bg-gray-50/50">
+                    <div className="inline-flex items-center gap-2 text-indigo-600 font-black text-[10px] uppercase tracking-[0.2em] mb-6">
+                        <div className="w-6 h-[2px] bg-indigo-600"></div>
+                        Monthly Focus
+                    </div>
+                    <h2 className="text-3xl font-black text-gray-900 mb-6 uppercase tracking-tight leading-tight">Dynamic Futsal Warm-Up: <span className="text-indigo-900">Elite Activation</span></h2>
+                    <p className="text-gray-500 font-medium leading-relaxed mb-10">
+                        A scientifically-backed routine used by professional academies to prime the nervous system and increase tissue elasticity before high-intensity play.
+                    </p>
+                    <button className="flex items-center gap-3 bg-indigo-950 text-white px-8 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-xl shadow-indigo-100 group-hover:scale-[1.02]">
+                        <Play fill="white" size={18} />
+                        Watch Full Session
                     </button>
                 </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 pb-24">
-        {/* Filter Section */}
-        <div className={`transition-all duration-1000 delay-300 transform ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        {/* Categories Section */}
+        <div className={`transition-all duration-1000 delay-500 transform ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           <WorkoutFilter activeFilter={activeFilter} setFilter={setActiveFilter} />
         </div>
 
-        {/* Dynamic Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        {/* Drills Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
           {filteredWorkouts.map((workout, index) => (
             <div 
               key={workout.id} 
               className={`transition-all duration-700 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
-              style={{ transitionDelay: `${index * 150}ms` }}
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
               <WorkoutCard 
                 workout={workout} 
@@ -193,12 +226,13 @@ export default function WorkoutHub() {
         </div>
 
         {filteredWorkouts.length === 0 && (
-          <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
-            <p className="text-gray-400 font-medium">No drills found in this category. Check back soon!</p>
+          <div className="text-center py-24 bg-gray-50 rounded-[40px] border-4 border-dashed border-gray-100">
+            <Target className="w-16 h-16 text-gray-200 mx-auto mb-6" />
+            <h3 className="text-xl font-black text-gray-400 uppercase tracking-widest">No drills found in this category</h3>
+            <p className="text-gray-400 mt-2 font-medium">Check back soon for new content!</p>
           </div>
         )}
       </div>
-
 
       {/* Modal */}
       {selectedWorkout && (

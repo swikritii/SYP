@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, MapPin, DollarSign, Users, TrendingUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar, MapPin, DollarSign, Users, TrendingUp, BarChart3 } from 'lucide-react';
 import StatsCard from '../../components/dashboard/StatsCard';
 import { apiClient } from '../../services/apiClient';
 
 export default function OwnerDashboard() {
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -58,15 +60,44 @@ export default function OwnerDashboard() {
           <p className="text-gray-500">Welcome back. Here's what's happening with your properties today.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard title="Total Bookings" value={totalBookings} icon={Calendar} color="indigo" trend={12} />
         <StatsCard title="Active Courts" value={activeCourts} icon={MapPin} color="green" trend={-2} />
         <StatsCard title="Revenue (Est.)" value={`Rs. ${Math.round(revenue)}`} icon={DollarSign} color="amber" trend={18} />
+        <StatsCard title="Conversion Rate" value="24%" icon={TrendingUp} color="blue" trend={4} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Quick Actions */}
+          <div className="lg:col-span-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+              <h2 className="text-lg font-bold text-gray-900 mb-6">Quick Actions</h2>
+              <div className="space-y-4">
+                  <button onClick={() => navigate('/owner/courts')} className="w-full flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-indigo-50 hover:text-indigo-700 transition group border-none cursor-pointer">
+                      <div className="flex items-center gap-3">
+                          <div className="p-2 bg-white rounded-lg shadow-sm group-hover:bg-indigo-100"><MapPin className="w-4 h-4" /></div>
+                          <span className="text-sm font-semibold">Add New Court</span>
+                      </div>
+                      <TrendingUp className="w-4 h-4 opacity-0 group-hover:opacity-100 transition" />
+                  </button>
+                  <button onClick={() => navigate('/owner/bookings')} className="w-full flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition group border-none cursor-pointer">
+                      <div className="flex items-center gap-3">
+                          <div className="p-2 bg-white rounded-lg shadow-sm group-hover:bg-emerald-100"><Calendar className="w-4 h-4" /></div>
+                          <span className="text-sm font-semibold">View Bookings</span>
+                      </div>
+                      <TrendingUp className="w-4 h-4 opacity-0 group-hover:opacity-100 transition" />
+                  </button>
+                  <button onClick={() => navigate('/owner/analytics')} className="w-full flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-amber-50 hover:text-amber-700 transition group border-none cursor-pointer">
+                      <div className="flex items-center gap-3">
+                          <div className="p-2 bg-white rounded-lg shadow-sm group-hover:bg-amber-100"><BarChart3 className="w-4 h-4" /></div>
+                          <span className="text-sm font-semibold">Detailed Reports</span>
+                      </div>
+                      <TrendingUp className="w-4 h-4 opacity-0 group-hover:opacity-100 transition" />
+                  </button>
+              </div>
+          </div>
+
           {/* Revenue Chart */}
-          <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition">
               <div className="flex items-center justify-between mb-6">
                   <div>
                       <h2 className="text-lg font-bold text-gray-900">Revenue Overview</h2>

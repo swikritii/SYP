@@ -38,4 +38,24 @@ export const bookingService = {
     if (!res.ok) throw new Error(data.message || 'Failed to cancel booking');
     return data;
   },
+
+  async getOwnerBookings() {
+    const res = await fetch(`${API_BASE}/bookings/owner`, {
+      headers: getHeaders(),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to fetch court bookings');
+    return data;
+  },
+
+  async updateBookingStatus(bookingId, status) {
+    const res = await fetch(`${API_BASE}/bookings/${bookingId}/status`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify({ status }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to update booking status');
+    return data;
+  },
 };

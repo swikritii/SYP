@@ -15,8 +15,8 @@ async function startServer() {
     const connected = await testConnection();
     
     if (!connected) {
-        console.log('\n❌ Cannot start server without database connection');
-        console.log('\n💡 Troubleshooting steps:');
+        console.log('\n Cannot start server without database connection');
+        console.log('\n Troubleshooting steps:');
         console.log('   1. Check your .env for DB credentials');
         console.log('   2. Ensure your MySQL server is running');
         console.log('   3. Run "npm run init-db" if this is a fresh setup\n');
@@ -43,7 +43,7 @@ async function startServer() {
 
     // Socket.io logic
     io.on('connection', (socket) => {
-        console.log('⚡ A user connected to chat:', socket.id);
+        console.log(' A user connected to chat:', socket.id);
 
         // When a user sends a message
         socket.on('send_message', async (data) => {
@@ -71,14 +71,14 @@ async function startServer() {
         });
 
         socket.on('disconnect', () => {
-            console.log('🔴 User disconnected:', socket.id);
+            console.log(' User disconnected:', socket.id);
         });
     });
 
     server.listen(PORT, () => {
-        console.log(`🚀 Server is running on port ${PORT}`);
-        console.log(`📍 API Base: http://localhost:${PORT}`);
-        console.log(`📍 Test Health: http://localhost:${PORT}/\n`);
+        console.log(` Server is running on port ${PORT}`);
+        console.log(` API Base: http://localhost:${PORT}`);
+        console.log(` Test Health: http://localhost:${PORT}/\n`);
     });
 }
 

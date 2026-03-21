@@ -51,7 +51,7 @@ async function initializeDatabase() {
                     return;
                 }
 
-                console.log('✅ Database initialized successfully!');
+                console.log(' Database initialized successfully!');
                 console.log('   - Database: test');
                 console.log('   - Table: users (created)');
                 connection.end();
