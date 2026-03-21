@@ -26,6 +26,8 @@ import BookingConfirmation from '../pages/user/BookingConfirmation';
 import ChatPage from '../pages/user/ChatPage';
 import ProfileSettings from '../pages/user/ProfileSettings';
 import PlayerBookings from '../pages/user/PlayerBookings';
+import PaymentSuccess from '../pages/user/PaymentSuccess';
+import PaymentFailure from '../pages/user/PaymentFailure';
 
 // Owner Pages
 import OwnerDashboard from '../pages/owner/OwnerDashboard';
@@ -88,6 +90,8 @@ export default function AppRoutes() {
         <Route path="/dashboard/bookings" element={<PlayerBookings />} />
         <Route path="/dashboard/settings" element={<ProfileSettings />} />
         <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-failure" element={<PaymentFailure />} />
         <Route path="/chat" element={<ChatPage />} />
       </Route>
 

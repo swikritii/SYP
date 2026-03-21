@@ -42,6 +42,18 @@ const BookingController = {
                 is_free_reward = true;
             }
 
+            // Get court price for calculation
+            const [court] = await pool.query('SELECT price_per_hour FROM courts WHERE id = ?', [court_id]);
+            if (court.length === 0) {
+                return res.status(404).json({ message: 'Court not found' });
+            }
+
+            const pricePerHour = Number(court[0].price_per_hour);
+            const start = new Date(`1970-01-01T${start_time}`);
+            const end = new Date(`1970-01-01T${end_time}`);
+            const durationHours = (end - start) / (1000 * 60 * 60);
+            const total_amount = is_free_reward ? 0 : (pricePerHour * durationHours);
+
             // Insert new booking into the database
             const [result] = await pool.query(
                 'INSERT INTO bookings (user_id, court_id, date, start_time, end_time, is_free_reward) VALUES (?, ?, ?, ?, ?, ?)',
@@ -51,11 +63,12 @@ const BookingController = {
             res.status(201).json({ 
                 message: is_free_reward ? 'Booking created successfully! Congratulations, this booking is FREE as a loyalty reward!' : 'Booking created successfully.', 
                 bookingId: result.insertId,
-                is_free_reward 
+                is_free_reward,
+                total_amount
             });
         } catch (err) {
             console.error('Error creating booking:', err);
-            res.status(500).json({ message: 'Internal Server Error while creating the booking. Please check your inputs.', error: err.message });
+            res.status(500).json({ message: 'Internal Server Error while creating the booking.', error: err.message });
         }
     },
 

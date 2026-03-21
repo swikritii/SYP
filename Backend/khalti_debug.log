@@ -1,0 +1,200 @@
+
+=== Khalti Debug 2026-03-21T09:23:23.528Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 7500,
+  "purchase_order_id": "ORDER-1774085002984-27",
+  "purchase_order_name": "Futsal Booking #27",
+  "customer_info": {
+    "name": "sujal rai",
+    "email": "sujal@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:24:09.817Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774085049708-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:24:13.157Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774085053096-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:24:16.150Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774085056079-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:26:04.073Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774085163775-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:26:10.300Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774085170178-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:46:23.216Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774086382791-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:46:49.861Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774086409622-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:50:02.009Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774086601742-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================
+
+=== Khalti Debug 2026-03-21T09:50:12.457Z ===
+Status: 401
+Payload: {
+  "return_url": "http://localhost:5173/payment-success",
+  "website_url": "http://localhost:5173",
+  "amount": 15000,
+  "purchase_order_id": "ORDER-1774086612195-28",
+  "purchase_order_name": "Futsal Booking #28",
+  "customer_info": {
+    "name": "aayush pokharel",
+    "email": "aayush@gmail.com",
+    "phone": "9800000000"
+  }
+}
+Response: {
+  "detail": "Invalid token.",
+  "status_code": 401
+}
+==============================

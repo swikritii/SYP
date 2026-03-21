@@ -41,6 +41,9 @@ app.use('/api/chat', chatRoutes);
 const notificationRoutes = require('./routes/notificationRoutes');
 app.use('/api/notifications', notificationRoutes);
 
+const paymentRoutes = require('./routes/paymentRoutes');
+app.use('/api/payments', paymentRoutes);
+
 // Demo /users route (if still needed)
 const { pool } = require('./db');
 app.get('/api/users', async (req, res) => {

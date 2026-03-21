@@ -50,3 +50,5 @@ export const apiClient = {
     return this.request(endpoint, { ...options, method: 'DELETE' });
   }
 };
+
+export default apiClient;
