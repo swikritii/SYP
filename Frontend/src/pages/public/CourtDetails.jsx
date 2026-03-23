@@ -5,6 +5,7 @@ import {
   Wifi, Car, Coffee, Droplets, ShowerHead, Shield, Users, Calendar
 } from 'lucide-react';
 import BookingForm from '../../components/booking/BookingForm';
+import MapComponent from '../../components/Map';
 import { apiClient } from '../../services/apiClient';
 
 const amenityIcons = {
@@ -246,6 +247,14 @@ export default function CourtDetails() {
                           );
                         })}
                       </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-3 text-indigo-900 flex items-center gap-2">
+                        <MapPin className="w-5 h-5" />
+                        Court Location
+                      </h3>
+                      <MapComponent singleCourt={court} height="300px" />
                     </div>
 
                     <div>

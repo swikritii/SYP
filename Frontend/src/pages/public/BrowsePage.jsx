@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CourtCard from '../../components/court/CourtCard';
+import MapComponent from '../../components/Map';
 import { apiClient } from '../../services/apiClient';
 
 const StarRating = ({ filled }) => (
@@ -14,6 +15,7 @@ export default function BrowsePage() {
   const [priceRange, setPriceRange] = useState(2500); // Max reasonable price in RS
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [location, setLocation] = useState('All Locations');
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     const fetchCourts = async () => {
@@ -170,7 +172,22 @@ export default function BrowsePage() {
 
         {/* Court listings */}
         <div className="flex-1">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Discover Futsal Courts</h2>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Discover Futsal Courts</h2>
+            <button 
+              onClick={() => setShowMap(!showMap)}
+              className="px-4 py-2 bg-indigo-50 text-indigo-900 rounded-lg font-semibold text-sm hover:bg-indigo-100 transition flex items-center gap-2"
+            >
+              {showMap ? 'Show List only' : 'Show Map view'}
+              <span>{showMap ? '📋' : '🗺️'}</span>
+            </button>
+          </div>
+
+          {showMap && (
+            <div className="mb-8">
+              <MapComponent courts={filteredCourts} height="500px" />
+            </div>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {filteredCourts.map((court) => (
