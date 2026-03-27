@@ -20,7 +20,7 @@ export default function HomePage() {
       location: 'Pulchowk, Lalitpur',
       rating: 4.7,
       price: 1200,
-      image: 'https://images.unsplash.com/photo-1526232759583-02f4db0a513b?q=80&w=800&h=600',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBlj-Fr2NwRtpiD6OLJv9kn6sE7qWljV8f_w&s',
     },
     {
       id: 3,
@@ -28,7 +28,7 @@ export default function HomePage() {
       location: 'Suryabinayak, Bhaktapur',
       rating: 4.9,
       price: 1000,
-      image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=800&h=600',
+      image: 'https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?cs=srgb&dl=pexels-pixabay-46798.jpg&fm=jpg',
     },
   ];
 
