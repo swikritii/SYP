@@ -63,8 +63,8 @@ const workoutData = [
     duration: '20 min',
     difficulty: 'Advanced',
     description: 'Build unilateral leg strength and stability crucial for shooting power.',
-    thumbnail: 'https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?auto=format&fit=crop&q=80&w=800',
-    videoUrl: 'https://www.youtube.com/watch?v=7M7v6vPzBGE',
+    thumbnail: 'https://www.shutterstock.com/image-vector/man-doing-weighted-dumbbell-bulgarian-600nw-2542773155.jpg',
+    videoUrl: 'https://youtu.be/70Zd9yBQQig?si=_gb6ef9wHgtlHh44',
     shortId: '7M7v6vPzBGE',
     tips: [
       'Maintain an upright torso.',

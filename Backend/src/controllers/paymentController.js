@@ -1,5 +1,6 @@
 const { pool } = require('../db');
 const crypto = require('crypto');
+const NotificationService = require('../services/notificationService');
 
 /**
  * eSewa Payment Gateway (v2 UAT)
@@ -123,6 +124,20 @@ exports.verifyPayment = async (req, res) => {
                 ['confirmed', bookingId]
             );
             await connection.commit();
+
+            // --- Send notification to the user ---
+            const [bookingRows] = await pool.query(
+                'SELECT user_id FROM bookings WHERE id = ?',
+                [bookingId]
+            );
+            if (bookingRows.length > 0) {
+                await NotificationService.createNotification(
+                    bookingRows[0].user_id,
+                    'payment_success',
+                    `Your payment of Rs. ${payment[0].amount} has been confirmed! Your booking #${bookingId} is now active. Enjoy your game! 🎉`
+                );
+            }
+
             res.json({ success: true, message: 'Payment verified and booking confirmed' });
         } catch (dbErr) {
             await connection.rollback();

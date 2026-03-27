@@ -1,0 +1,126 @@
+{
+  "users": [
+    {
+      "id": 3,
+      "email": "owner@demo.com",
+      "role": "owner"
+    },
+    {
+      "id": 8,
+      "email": "owner@gmail.com",
+      "role": "owner"
+    }
+  ],
+  "courts": [
+    {
+      "id": 1,
+      "name": "Urban Arena Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 2,
+      "name": "Elite Futsal Center",
+      "owner_id": 3
+    },
+    {
+      "id": 3,
+      "name": "Greenlight Sports Arena",
+      "owner_id": 3
+    },
+    {
+      "id": 4,
+      "name": "Kathmandu Futsal Arena",
+      "owner_id": 3
+    },
+    {
+      "id": 5,
+      "name": "Patan Kings Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 6,
+      "name": "Bhakatpur Sports Hub",
+      "owner_id": 3
+    },
+    {
+      "id": 7,
+      "name": "Pokhara Futsal Club",
+      "owner_id": 3
+    },
+    {
+      "id": 8,
+      "name": "Dharan Khelkud Kendra",
+      "owner_id": 3
+    },
+    {
+      "id": 9,
+      "name": "Biratnagar Sports Arena",
+      "owner_id": 3
+    },
+    {
+      "id": 10,
+      "name": "Baneshwor Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 11,
+      "name": "Butwal United Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 12,
+      "name": "Chitwan Tigers Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 13,
+      "name": "Hetauda Futsal Park",
+      "owner_id": 3
+    },
+    {
+      "id": 14,
+      "name": "Kirtipur Recreation Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 15,
+      "name": "Thamel City Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 16,
+      "name": "Itahari Futsal Arena",
+      "owner_id": 3
+    },
+    {
+      "id": 17,
+      "name": "Bhairahawa Sports Complex",
+      "owner_id": 3
+    },
+    {
+      "id": 18,
+      "name": "Nepalgunj Futsal Club",
+      "owner_id": 3
+    },
+    {
+      "id": 19,
+      "name": "Kirtipur Futsal Hub",
+      "owner_id": 3
+    },
+    {
+      "id": 20,
+      "name": "Pokhara Sports Castle",
+      "owner_id": 3
+    },
+    {
+      "id": 21,
+      "name": "Biratnagar United Futsal",
+      "owner_id": 3
+    },
+    {
+      "id": 22,
+      "name": "Tribhuwan Futsal Arena",
+      "owner_id": 8
+    }
+  ]
+}

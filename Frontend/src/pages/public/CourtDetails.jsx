@@ -6,7 +6,11 @@ import {
 } from 'lucide-react';
 import BookingForm from '../../components/booking/BookingForm';
 import MapComponent from '../../components/Map';
+import ReviewList from '../../components/court/ReviewList';
+import ReviewForm from '../../components/court/ReviewForm';
 import { apiClient } from '../../services/apiClient';
+import reviewService from '../../services/reviewService';
+import { useAuth } from '../../context/AuthContext';
 
 const amenityIcons = {
   'Locker Room': ShowerHead,
@@ -19,38 +23,58 @@ const amenityIcons = {
 export default function CourtDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('overview');
   const [court, setCourt] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCourt = async () => {
+    const fetchCourtAndReviews = async () => {
       try {
-        const data = await apiClient.get(`/courts/${id}`);
+        const [courtData, reviewsData] = await Promise.all([
+          apiClient.get(`/courts/${id}`),
+          reviewService.getCourtReviews(id).catch(() => ({ reviews: [], stats: { average_rating: 0, total_reviews: 0 } }))
+        ]);
+
         const parsedCourt = {
-          ...data,
-          price: Number(data.price_per_hour),
-          amenities: data.amenities || ['Locker Room', 'Parking', 'WiFi'],
-          images: (data.images && typeof data.images === 'string') ? JSON.parse(data.images) : ['https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&q=80'],
+          ...courtData,
+          price: Number(courtData.price_per_hour),
+          amenities: courtData.amenities || ['Locker Room', 'Parking', 'WiFi'],
+          images: (courtData.images && typeof courtData.images === 'string') ? JSON.parse(courtData.images) : ['https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&q=80'],
           rules: ['Proper futsal shoes required', 'Maximum 12 players per court', 'Cancellation must be made 24 hours in advance'],
-          reviews: [],
-          rating: 4.5,
-          reviewCount: 12
+          reviews: reviewsData.reviews,
+          rating: reviewsData.stats.average_rating || 0,
+          reviewCount: reviewsData.stats.total_reviews || 0
         };
+        
         // fallback if images is empty array
         if (!parsedCourt.images || parsedCourt.images.length === 0) {
             parsedCourt.images = ['https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&q=80'];
         }
         setCourt(parsedCourt);
       } catch (err) {
-        console.error('Failed to fetch court', err);
+        console.error('Failed to fetch court data', err);
       } finally {
         setLoading(false);
       }
     };
-    fetchCourt();
+    fetchCourtAndReviews();
   }, [id]);
+
+  const refreshReviews = async () => {
+    try {
+      const reviewsData = await reviewService.getCourtReviews(id);
+      setCourt(prev => ({
+        ...prev,
+        reviews: reviewsData.reviews,
+        rating: reviewsData.stats.average_rating || 0,
+        reviewCount: reviewsData.stats.total_reviews || 0
+      }));
+    } catch (err) {
+      console.error('Failed to refresh reviews', err);
+    }
+  };
 
   const nextImage = () => {
     if (court) setCurrentImageIndex((prev) => (prev + 1) % court.images.length);
@@ -274,6 +298,7 @@ export default function CourtDetails() {
                 )}
 
                 {/* Video Tab */}
+                {/* Video Tab */}
                 {activeTab === 'video' && (
                   <div className="space-y-6">
                     <div>
@@ -303,36 +328,20 @@ export default function CourtDetails() {
 
                 {/* Reviews Tab */}
                 {activeTab === 'reviews' && (
-                  <div className="space-y-4">
-                    {court.reviews.length === 0 ? (
-                      <p className="text-gray-500 text-center py-8">No reviews yet.</p>
+                  <div>
+                    <ReviewList reviews={court.reviews} />
+                    {user ? (
+                      <ReviewForm courtId={court.id} onReviewSubmitted={refreshReviews} />
                     ) : (
-                      court.reviews.map((review) => (
-                        <div key={review.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-900 font-bold text-sm">
-                                {review.user.charAt(0)}
-                              </div>
-                              <div>
-                                <p className="font-medium text-gray-900 text-sm">{review.user}</p>
-                                <p className="text-xs text-gray-400">{review.date}</p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`w-4 h-4 ${
-                                    i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                          <p className="text-sm text-gray-600 ml-13">{review.comment}</p>
-                        </div>
-                      ))
+                      <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 text-center mt-8">
+                        <p className="text-gray-600 mb-4">Please log in to leave a review</p>
+                        <button 
+                          onClick={() => navigate('/login')}
+                          className="bg-indigo-600 text-white px-6 py-2 rounded-xl font-medium hover:bg-indigo-700 transition"
+                        >
+                          Log In
+                        </button>
+                      </div>
                     )}
                   </div>
                 )}
