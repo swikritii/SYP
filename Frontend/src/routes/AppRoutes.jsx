@@ -19,6 +19,8 @@ import HelpCenter from '../pages/public/HelpCenter';
 // Auth Pages
 import Login from '../pages/auth/Login';
 import Signup from '../pages/auth/Signup';
+import ForgotPassword from '../pages/auth/ForgotPassword';
+import ResetPassword from '../pages/auth/ResetPassword';
 
 // User Pages
 import PlayerDashboard from '../pages/user/PlayerDashboard';
@@ -77,6 +79,8 @@ export default function AppRoutes() {
       {/* Auth Routes — no layout */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
 
       {/* Player Dashboard — DashboardLayout with player sidebar */}
       <Route

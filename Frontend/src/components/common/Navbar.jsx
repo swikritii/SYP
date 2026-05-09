@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Globe, Search, Menu, X, ChevronDown, User, LogOut, LayoutDashboard, Bell, Trash2, CheckCircle } from 'lucide-react';
 import notificationService from '../../services/notificationService';
+import { socketService } from '../../services/socketService';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -37,9 +38,22 @@ export default function Navbar() {
 
   useEffect(() => {
     fetchNotifications();
-    // Refresh notifications every 30 seconds
+    // Refresh notifications every 30 seconds (fallback)
     const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
+
+    if (user && user.id) {
+      socketService.connect(user.id);
+      socketService.onNotification((newNotif) => {
+        // Automatically add to list and increment unread
+        setNotifications((prev) => [newNotif, ...prev]);
+        setUnreadCount((prev) => prev + 1);
+      });
+    }
+
+    return () => {
+      clearInterval(interval);
+      socketService.offNotification();
+    };
   }, [token]);
 
   const handleMarkAsRead = async (id) => {

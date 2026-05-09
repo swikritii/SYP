@@ -5,7 +5,7 @@ import { Eye, EyeOff } from 'lucide-react';
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '', role: 'player' });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState(null);
@@ -30,7 +30,8 @@ export default function Signup() {
       const json = await authService.signup(
         `${formData.firstName.trim()} ${formData.lastName.trim()}`,
         formData.email.trim(),
-        formData.password
+        formData.password,
+        formData.role
       );
       
       if (json.token) {
@@ -90,6 +91,25 @@ export default function Signup() {
                   onChange={handleChange} placeholder="your.email@example.com"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
                 />
+              </div>
+
+              {/* Role Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Registering For</label>
+                <div className="flex gap-6">
+                  <label className="flex items-center cursor-pointer">
+                    <input type="radio" name="role" value="player" checked={formData.role === 'player'} onChange={handleChange} className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" />
+                    <span className="ml-2 text-sm text-gray-700">Player</span>
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input type="radio" name="role" value="owner" checked={formData.role === 'owner'} onChange={handleChange} className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" />
+                    <span className="ml-2 text-sm text-gray-700">Court Owner</span>
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input type="radio" name="role" value="admin" checked={formData.role === 'admin'} onChange={handleChange} className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" />
+                    <span className="ml-2 text-sm text-gray-700">Admin</span>
+                  </label>
+                </div>
               </div>
 
               {/* Password */}

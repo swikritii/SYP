@@ -40,10 +40,20 @@ async function startServer() {
     });
 
     const { pool } = require('./db');
+    const NotificationService = require('./services/notificationService');
+    NotificationService.setIo(io);
 
     // Socket.io logic
     io.on('connection', (socket) => {
-        console.log(' A user connected to chat:', socket.id);
+        console.log(' A user connected via socket:', socket.id);
+
+        // Register user to their personal notification room
+        socket.on('register', (userId) => {
+            if (userId) {
+                socket.join(`user_${userId}`);
+                console.log(` User ${userId} registered for notifications on socket ${socket.id}`);
+            }
+        });
 
         // When a user sends a message
         socket.on('send_message', async (data) => {

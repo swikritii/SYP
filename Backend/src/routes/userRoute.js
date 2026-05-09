@@ -11,6 +11,8 @@ const authenticateToken = require('../middleware/auth');
 // Public routes
 router.post('/signup', AuthorizationController.signup);
 router.post('/login', AuthorizationController.login);
+router.post('/forgot-password', AuthorizationController.forgotPassword);
+router.post('/reset-password', AuthorizationController.resetPassword);
 
 // Protected routes (require JWT)
 router.get('/me', authenticateToken, AuthorizationController.me);
